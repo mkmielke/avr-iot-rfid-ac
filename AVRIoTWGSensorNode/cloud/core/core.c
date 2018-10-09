@@ -89,23 +89,15 @@ static error_t set_up_send_timer(void);
 static error_t do_nothig(void);
 
 state_t state_array[] = {
-    {.pStateFunc = enable_provision_ap, .timeout = NO_TIMEOUT},                            // AP_PROVISION_S
-    {.pStateFunc = &wifi_connect, .nextState = BIND_NTP_SOCKET_S, .timeout = CFG_TIMEOUT}, // WIFI_CONNECT_S
-    {.pStateFunc = bind_ntp_socket, .nextState = NTP_REQ_S, .timeout = CFG_TIMEOUT},       // BIND_NTP_SOCKET_S
-    {.pStateFunc = ntp_req, .nextState = DNS_REQ_S, .timeout = CFG_TIMEOUT},               // NTP_REQ_S
-    {.pStateFunc = dns_req, .nextState = TLS_CONNECT_S, .timeout = CFG_TIMEOUT},           // DNS_REQ_S
-    {
-        .pStateFunc = tls_connect,
-        .nextState  = MQTT_CONNECT_S,
-        .timeout    = CFG_TIMEOUT,
-    }, // TLS_CONNECT_S
-    {
-        .pStateFunc = cloud_connect,
-        .nextState  = READY_TO_SEND_S,
-        .timeout    = 1000,
-    },                                                                                        // MQTT_CONNECT_S
-    {.pStateFunc = set_up_send_timer, .nextState = BIND_NTP_SOCKET_S, .timeout = NO_TIMEOUT}, // READY_TO_SEND_S
-    {.pStateFunc = do_nothig, .timeout = NO_TIMEOUT}                                          // STOP_S
+    {.pStateFunc = enable_provision_ap,                               .timeout = NO_TIMEOUT       }, // AP_PROVISION_S
+    {.pStateFunc = &wifi_connect,     .nextState = BIND_NTP_SOCKET_S, .timeout = CFG_TIMEOUT      }, // WIFI_CONNECT_S
+    {.pStateFunc = bind_ntp_socket,   .nextState = NTP_REQ_S,         .timeout = CFG_TIMEOUT      }, // BIND_NTP_SOCKET_S
+    {.pStateFunc = ntp_req,           .nextState = DNS_REQ_S,         .timeout = CFG_TIMEOUT      }, // NTP_REQ_S
+    {.pStateFunc = dns_req,           .nextState = TLS_CONNECT_S,     .timeout = CFG_TIMEOUT      }, // DNS_REQ_S
+    {.pStateFunc = tls_connect,       .nextState = MQTT_CONNECT_S,    .timeout = CFG_TIMEOUT      }, // TLS_CONNECT_S
+    {.pStateFunc = cloud_connect,     .nextState = READY_TO_SEND_S,   .timeout = CFG_SEND_INTERVAL}, // MQTT_CONNECT_S                                                                                      // MQTT_CONNECT_S
+    {.pStateFunc = set_up_send_timer, .nextState = BIND_NTP_SOCKET_S, .timeout = NO_TIMEOUT       }, // READY_TO_SEND_S
+    {.pStateFunc = do_nothig,                                         .timeout = NO_TIMEOUT       }  // STOP_S
 };
 
 timer_struct_t sendToCloudTimer;
