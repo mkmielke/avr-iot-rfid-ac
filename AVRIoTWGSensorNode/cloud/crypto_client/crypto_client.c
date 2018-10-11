@@ -26,10 +26,26 @@
 */
 
 #include <stdio.h>
-#include "crypto_client.h"
-#include "../core/core.h"
 #include "../cryptoauthlib/lib/jwt/atca_jwt.h"
-#include "../core/core.h"
+#include "../cryptoauthlib/lib/tls/atcatls.h"
+#include "crypto_client.h"
+#include "../cloud_service.h"
+
+#ifndef ATCA_NO_HEAP
+#error : This project uses CryptoAuthLibrary V2. Please add "ATCA_NO_HEAP" to toolchain symbols.
+#endif
+
+#ifndef ATCA_NO_POLL
+#error : This project uses ATCA_NO_POLL option. Please add "ATCA_NO_POLL" to toolchain symbols.
+#endif
+
+#ifndef ATCA_HAL_I2C
+#error : This project uses I2C interface. Please add "ATCA_HAL_I2C" to toolchain symbols.
+#endif
+
+#ifndef ATCA_PRINTF
+#error : This project uses ATCA_debug_print. Please add "ATCA_PRINTF" to toolchain symbols.
+#endif
 
 const uint8_t public_key_x509_header[]
     = {0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01, 0x06,
@@ -46,42 +62,43 @@ ATCAIfaceCfg cfg_ateccx08a_i2c_custom = {.iface_type            = ATCA_I2C_IFACE
                                          .wake_delay            = 1500,
                                          .rx_retries            = 20};
 
-uint8_t cryptoDeviceInitialized = true;
+uint8_t cryptoDeviceInitialized = false;
 
-error_t CRYPTO_CLIENT_createJWT(char *buf, size_t buflen, uint32_t ts)
+uint8_t CRYPTO_CLIENT_createJWT(char *buf, size_t buflen, uint32_t ts, const char *projectId)
 {
 	atca_jwt_t jwt;
 
 	if (!cryptoDeviceInitialized) {
-		return JWT_CREATE_ERROR;
+		return ERROR;
 	}
 
 	if (buf && buflen) {
 		/* Build the JWT */
 		if (ATCA_SUCCESS != atca_jwt_init(&jwt, buf, buflen)) {
-			return JWT_CREATE_ERROR;
+			return ERROR;
 		}
 
 		if (ATCA_SUCCESS != atca_jwt_add_claim_numeric(&jwt, "iat", ts)) {
-			return JWT_CREATE_ERROR;
+			return ERROR;
 		}
 
-		if (ATCA_SUCCESS != atca_jwt_add_claim_numeric(&jwt, "exp", ts + 60 * 20)) {
-			return JWT_CREATE_ERROR;
+		if (ATCA_SUCCESS != atca_jwt_add_claim_numeric(&jwt, "exp", ts + 60 * 60)) // 1 hour
+		{
+			return ERROR;
 		}
 
 		if (ATCA_SUCCESS != atca_jwt_add_claim_string(&jwt, "aud", projectId)) {
-			return JWT_CREATE_ERROR;
+			return ERROR;
 		}
 
 		if (ATCA_SUCCESS != atca_jwt_finalize(&jwt, 0)) {
-			return JWT_CREATE_ERROR;
+			return ERROR;
 		}
 	}
 	return NO_ERROR;
 }
 
-error_t CRYPTO_CLIENT_printPublicKey(char *s)
+uint8_t CRYPTO_CLIENT_printPublicKey(char *s)
 {
 	char        buf[128];
 	uint8_t *   tmp;
@@ -89,7 +106,7 @@ error_t CRYPTO_CLIENT_printPublicKey(char *s)
 	ATCA_STATUS retVal;
 
 	if (ATCA_SUCCESS != atcab_init(&cfg_ateccx08a_i2c_custom)) {
-		return ATECC_GET_KEY_ERROR;
+		return ERROR;
 	}
 
 	/* Calculate where the raw data will fit into the buffer */
@@ -102,14 +119,14 @@ error_t CRYPTO_CLIENT_printPublicKey(char *s)
 	retVal = atcab_get_pubkey(0, tmp + sizeof(public_key_x509_header));
 
 	if (ATCA_SUCCESS != retVal) {
-		return ATECC_GET_KEY_ERROR;
+		return ERROR;
 	}
 
 	/* Convert to base 64 */
 	retVal = atcab_base64encode(tmp, ATCA_PUB_KEY_SIZE + sizeof(public_key_x509_header), buf, &bufferLen);
 
 	if (ATCA_SUCCESS != retVal) {
-		return ATECC_GET_KEY_ERROR;
+		return ERROR;
 	}
 
 	/* Add a null terminator */
@@ -121,7 +138,7 @@ error_t CRYPTO_CLIENT_printPublicKey(char *s)
 	return NO_ERROR;
 }
 
-error_t CRYPTO_CLIENT_printSerialNumber(char *s)
+uint8_t CRYPTO_CLIENT_printSerialNumber(char *s)
 {
 	ATCA_STATUS status = ATCA_SUCCESS;
 
@@ -131,7 +148,7 @@ error_t CRYPTO_CLIENT_printSerialNumber(char *s)
 		return retVal;
 	}
 
-	status = atcab_read_serial_number(g_serial_number);
+	status = atcatls_get_sn(g_serial_number);
 
 	if (status == ATCA_SUCCESS) {
 		for (uint8_t i = 0; i < ATCA_SERIAL_NUM_SIZE; i++) {
@@ -139,7 +156,7 @@ error_t CRYPTO_CLIENT_printSerialNumber(char *s)
 			s += 2;
 		}
 	} else {
-		return ATECC_SN_ERROR;
+		return ERROR;
 	}
 
 	return NO_ERROR;

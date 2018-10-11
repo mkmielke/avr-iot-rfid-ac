@@ -28,15 +28,17 @@
 #ifndef CRYPTO_CLIENT_H
 #define CRYPTO_CLIENT_H
 
+#define ERROR 1
+#define NO_ERROR 0
+
 #include <stdint.h>
-#include "../core/core.h"
 #include "cryptoauthlib/lib/atca_iface.h"
 
 extern ATCAIfaceCfg cfg_ateccx08a_i2c_custom;
 extern uint8_t      cryptoDeviceInitialized;
 
-error_t CRYPTO_CLIENT_createJWT(char *buf, size_t buflen, uint32_t ts);
-error_t CRYPTO_CLIENT_printPublicKey(char *s);
-error_t CRYPTO_CLIENT_printSerialNumber(char *s);
+uint8_t CRYPTO_CLIENT_createJWT(char *buf, size_t buflen, uint32_t ts, const char *projectId);
+uint8_t CRYPTO_CLIENT_printPublicKey(char *s);
+uint8_t CRYPTO_CLIENT_printSerialNumber(char *s);
 
 #endif /* CRYPTO_CLIENT_H */

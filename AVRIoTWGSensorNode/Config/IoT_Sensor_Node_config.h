@@ -1,12 +1,14 @@
 #ifndef IOT_SENSOR_NODE_CONFIG_H
 #define IOT_SENSOR_NODE_CONFIG_H
 
+#include "../winc/driver/include/m2m_wifi.h"
+
 // <h> Application Configuration
 
 // <o> Send Interval <0-100000>
-// <i> Send interval in ms
+// <i> Send interval in seconds
 // <id> application_send_interval
-#define CFG_SEND_INTERVAL 1000
+#define CFG_SEND_INTERVAL 1
 
 // <o> Timeout <0-100000>
 // <i> Timeout

@@ -1,7 +1,7 @@
 /*
-    \file   mcp9808.h
+    \file   sensors_handling.h
 
-    \brief  MCP9808 handler header file.
+    \brief  Sensors handler header file.
 
     (c) 2018 Microchip Technology Inc. and its subsidiaries.
 
@@ -25,8 +25,10 @@
     SOFTWARE.
 */
 
-#define MCP9809_ADDR 0x18 // 0x18 real address, must be shifted >>1
-#define MCP9808_REG_TA 0x05
+#ifndef SENSORS_HANDLING_H
+#define SENSORS_HANDLING_H
 
-uint16_t sensors_GetLightValue(void);
-int16_t  sensors_GetTempValue(void);
+uint16_t SENSORS_getLightValue(void);
+int16_t  SENSORS_getTempValue(void);
+
+#endif /* SENSORS_HANDLING_H*/

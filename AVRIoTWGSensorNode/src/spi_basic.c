@@ -55,7 +55,7 @@ static SPI_0_descriptor_t SPI_0_desc;
 void SPI_0_init()
 {
 
-	SPI0.CTRLA = 1 << SPI_CLK2X_bp    /* Enable Double Speed: enabled */
+	SPI0.CTRLA = 0 << SPI_CLK2X_bp    /* Enable Double Speed: disabled */
 	             | 0 << SPI_DORD_bp   /* Data Order Setting: disabled */
 	             | 1 << SPI_ENABLE_bp /* Enable Module: enabled */
 	             | 1 << SPI_MASTER_bp /* SPI module in master mode */

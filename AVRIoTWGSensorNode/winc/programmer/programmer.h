@@ -45,8 +45,8 @@
 /**
  * Include
  */
-#include "spi_flash/include/spi_flash_map.h"
-#include "spi_flash/include/spi_flash.h"
+#include "../spi_flash/include/spi_flash_map.h"
+#include "../spi_flash/include/spi_flash.h"
 
 #define ROOT_CERT_SIZE M2M_TLS_ROOTCER_FLASH_SIZE
 

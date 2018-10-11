@@ -66,7 +66,7 @@ extern "C" {
  * based on debug level.
  *
  * \param[in] condition A condition to be checked;
- *                      assert is thrown if the given condifition is false
+ *                      assert is thrown if the given condition is false
  */
 
 #ifdef DEBUG

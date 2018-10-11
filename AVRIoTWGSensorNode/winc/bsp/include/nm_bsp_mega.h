@@ -47,6 +47,6 @@
 #define NM_EDGE_INTERRUPT (1)
 
 #define NM_DEBUG CONF_WINC_DEBUG
-#define NM_BSP_PRINTF CONF_WINC_PRINTF
+#define NM_BSP_debug_print CONF_WINC_debug_print
 
 #endif /* _NM_BSP_MEGA_H_ */

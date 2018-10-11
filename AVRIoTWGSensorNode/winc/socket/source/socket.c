@@ -43,6 +43,7 @@
 INCLUDES
 *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*/
 
+#include <stdio.h>
 #include "../../bsp/include/nm_bsp.h"
 #include "../include/socket.h"
 #include "../../driver/source/m2m_hif.h"

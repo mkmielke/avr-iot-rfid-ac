@@ -2,12 +2,12 @@ format_version: '2'
 name: AVR IoT WG Sensor Node
 versions:
   api: '1.0'
-  backend: 1.3.73
-  commit: 75f2258d48912553b0bd533c92b20f36f54fe176
-  content: 1.0.1105
+  backend: 1.4.93
+  commit: 9c29f8365cf76e9937d19b1e765a83bc7a80e4e9
+  content: 1.0.1193
   content_pack_name: acme-packs-all
   format: '2'
-  frontend: 1.3.1765
+  frontend: 1.4.1787
 board:
   identifier: AVRIoTWG
   device: ATmega4808-MFR
@@ -15,7 +15,7 @@ details: null
 application:
   definition: 'Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::Application:AVR_IoT_WG_Sensor_Node:'
   configuration:
-    application_send_interval: 1000
+    application_send_interval: 1
     application_timeout: 5000
     main_wlan_auth: Wi-Fi network is secured with WPA/WPA2 personal(PSK)
     main_wlan_psk: microchip
@@ -25,27 +25,35 @@ application:
     project_region: us-central1
     registry_id: AVR-IOT
 middlewares:
-  Crypto_Authentication_IOTSensor_Node_Example_2:
-    user_label: Crypto_Authentication_IOTSensor_Node_Example_2
+  Crypto_Authentication_IOTSensor_Node:
+    user_label: Crypto_Authentication_IOTSensor_Node
     configuration: {}
-    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::CryptoAuthLibExample4808Step4
-    functionality: Crypto_Authentication_IOTSensor_Node_Example
-    api: CryptoAuthLib:CryptoAuthLib:AVR-IoT-WG
+    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::CryptoAuthLib
+    functionality: Crypto_Authentication_IOTSensor_Node
+    api: Crypto:CryptoAuthLib:AVR-IoT-WG
     dependencies:
       I2C_0: I2C_0
-  MQTT_IOT1_0:
-    user_label: MQTT_IOT1_0
+  WIFI_0:
+    user_label: WIFI_0
     configuration: {}
-    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::MQTT1
-    functionality: MQTT_IoT1
-    api: MQTT:IoT:Core4
+    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::WINC1510
+    functionality: WiFi_AVR
+    api: WIFI:WINC:Core
+    dependencies:
+      SPI_0: SPI_0
+  MQTT_IOT_0:
+    user_label: MQTT_IOT_0
+    configuration: {}
+    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::MQTT
+    functionality: MQTT_IoT
+    api: MQTT:IoT:Core
     dependencies: {}
-  CLI1_0:
-    user_label: CLI1_0
+  CLI_0:
+    user_label: CLI_0
     configuration: {}
-    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::CLI1
-    functionality: CLI1
-    api: CLI:Interface:Core4
+    definition: Atmel:AVR_IoT_WG_Sensor_Node:1.0.0::CLI
+    functionality: CLI
+    api: CLI:Interface:Core
     dependencies: {}
 drivers:
   CLKCTRL:
@@ -166,7 +174,7 @@ drivers:
           adc_clock_source: Main Clock (CLK_MAIN)
   USART_0:
     user_label: USART_0
-    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::USART2::driver_config_definition::Async.Polled.Mode::Drivers:USART:Basic
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::USART2::driver_config_definition::Async.IRQ.Mode::Drivers:USART:Basic
     functionality: USART
     api: Drivers:USART:Basic
     configuration:
@@ -192,6 +200,8 @@ drivers:
       ctrlc_udord: false
       dbgctrl_abmbp: false
       dbgctrl_dbgrun: true
+      driver_rx_buffer_size: '8'
+      driver_tx_buffer_size: '8'
       evctrl_irei: false
       printf_support: true
       rxplctrl_rxpl: 0
@@ -213,6 +223,47 @@ drivers:
           input: Main Clock (CLK_MAIN)
         configuration:
           usart_clock_source: Main Clock (CLK_MAIN)
+  SPI_0:
+    user_label: SPI_0
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::SPI0::driver_config_definition::SPI.Master.Polled::Drivers:SPI:Basic
+    functionality: SPI
+    api: Drivers:SPI:Basic
+    configuration:
+      spi_ctrla_clk2x: false
+      spi_ctrla_dord: false
+      spi_ctrla_enable: true
+      spi_ctrla_master: true
+      spi_ctrla_presc: System Clock / 4
+      spi_ctrlb_bufen: false
+      spi_ctrlb_bufwr: false
+      spi_ctrlb_mode: SPI Mode 0
+      spi_ctrlb_ssd: false
+      spi_intctrl_dreie: false
+      spi_intctrl_ie: false
+      spi_intctrl_rxcie: false
+      spi_intctrl_ssie: false
+      spi_intctrl_txcie: false
+      spi_open_close: false
+    optional_signals: []
+    variant:
+      specification: MASTER=1
+      required_signals:
+      - name: SPI0/MISO
+        pad: PA5
+        label: MISO
+      - name: SPI0/MOSI
+        pad: PA4
+        label: MOSI
+      - name: SPI0/SCK
+        pad: PA6
+        label: SCK
+    clocks:
+      domain_group:
+        nodes:
+        - name: SPI
+          input: Main Clock (CLK_MAIN)
+        configuration:
+          spi_clock_source: Main Clock (CLK_MAIN)
   CPUINT:
     user_label: CPUINT
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::CPUINT::driver_config_definition::CPUINT::Drivers:CPUINT:Init
@@ -337,6 +388,30 @@ pads:
     user_label: CONF_WIFI_M2M_SPI_CS_PIN
     configuration:
       pad_initial_level: High
+  LED_RED:
+    name: PD0
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD0
+    mode: Digital output
+    user_label: LED_RED
+    configuration: null
+  LED_YELLOW:
+    name: PD1
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD1
+    mode: Digital output
+    user_label: LED_YELLOW
+    configuration: null
+  LED_GREEN:
+    name: PD2
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD2
+    mode: Digital output
+    user_label: LED_GREEN
+    configuration: null
+  LED_BLUE:
+    name: PD3
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD3
+    mode: Digital output
+    user_label: LED_BLUE
+    configuration: null
   PD5:
     name: PD5
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD5
@@ -355,12 +430,39 @@ pads:
     mode: Digital input
     user_label: PF1
     configuration: null
+  CONF_WIFI_M2M_INT_PIN:
+    name: PF2
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PF2
+    mode: Digital input
+    user_label: CONF_WIFI_M2M_INT_PIN
+    configuration:
+      pad_pull_config: Pull-up
+  CONF_WIFI_M2M_CHIP_ENABLE_PIN:
+    name: PF3
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PF3
+    mode: Digital output
+    user_label: CONF_WIFI_M2M_CHIP_ENABLE_PIN
+    configuration: null
   CONF_WIFI_M2M_WAKE_PIN:
     name: PF4
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PF4
     mode: Digital output
     user_label: CONF_WIFI_M2M_WAKE_PIN
     configuration: null
+  SW1:
+    name: PF5
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PF5
+    mode: Digital input
+    user_label: SW1
+    configuration:
+      pad_pull_config: Pull-up
+  SW0:
+    name: PF6
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PF6
+    mode: Digital input
+    user_label: SW0
+    configuration:
+      pad_pull_config: Pull-up
   CONF_WIFI_M2M_RESET_PIN:
     name: PA1
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PA1
@@ -378,7 +480,7 @@ toolchain_options:
     identifier: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::environment_definition::All:Atmel.Studio:7.0.0
   configuration:
     compiler_config:
-      avrgcc_compiler_miscellaneous_OtherFlags: -std=gnu99 -DATCA_NO_HEAP -DATCA_NO_POLL
-        -DATCA_HAL_I2C -DATCA_PRINTF
+      avrgcc_compiler_miscellaneous_OtherFlags: -std=gnu99 -Wno-pragmas -DATCA_NO_HEAP
+        -DATCA_NO_POLL -DATCA_HAL_I2C -DATCA_PRINTF -DTCPIP_BSD -Os
     linker_config:
       avrgcc_linker_miscellaneous_LinkerFlags: ''

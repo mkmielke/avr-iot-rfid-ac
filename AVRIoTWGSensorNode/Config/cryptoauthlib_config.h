@@ -17,8 +17,8 @@
 
 /* Enable debug helper function */
 #if CONF_CRYPTOAUTHLIB_DEBUG_HELPER == 1
-#ifndef ATCAPRINTF
-#define ATCAPRINTF 1
+#ifndef ATCAdebug_print
+#define ATCAdebug_print 1
 #endif
 #endif
 

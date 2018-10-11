@@ -46,12 +46,17 @@
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/cpuint/doc/cpuint.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/rtc/doc/rtc.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/slpctrl/doc/slpctrl.rst"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="modules/spi/doc/spi_basic.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/timer/doc/tca.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/timer/doc/tcb.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/twi/doc/twi.rst"/>
         <file category="doc" condition="ARMCC, GCC, IAR" name="modules/usart/doc/usart_basic.rst"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/cli/cli.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/cli/cli.h"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="START_files/Docs/CLIReadme.rst"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="START_files/Docs/CryptoReadme.rst"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="START_files/Docs/MQTTReadme.rst"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="START_files/Docs/WINCReadme.rst"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cli/cli.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cli/cli.h"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="cryptoauthlib/app/README.md"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atca_bool.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atca_cfgs.c"/>
@@ -80,7 +85,6 @@
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert/atcacert_host_hw.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert/atcacert_host_sw.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert/atcacert_host_sw.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert/atcacert_pem.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert/atcacert_pem.h"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/basic/README.md"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/basic/atca_basic.c"/>
@@ -125,73 +129,33 @@
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/crypto/hashes/sha2_routines.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/crypto/hashes/sha2_routines.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/cryptoauthlib.h"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/README.md"/>
+        <file category="other" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/90-cryptohid.rules"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/atca_hal.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/atca_hal.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/atca_start_config.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/atca_start_iface.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/hal_atmega4809_i2c.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/hal_atmega4809_i2c.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal/hal_atmega4809_timer.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/host/atca_host.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/host/atca_host.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/jwt/atca_jwt.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/jwt/atca_jwt.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib_main.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib_main.h"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="umqtt/LICENSE.md"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="umqtt/umqtt.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="umqtt/umqtt.h"/>
-        <file category="doc" condition="ARMCC, GCC, IAR" name="Google_IoT_Core_Node.rst"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/core/core.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/core/core.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/credentials_storage/credentials_storage.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/credentials_storage/credentials_storage.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/crypto_client.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/crypto_client.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/hal/hal_atmega4809_i2c.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/hal/hal_atmega4809_i2c.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/hal/hal_atmega4809_timer.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/mqtt_client/mqtt_client.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/mqtt_client/mqtt_client.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/network_control/network_control.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/network_control/network_control.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/cloud.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/cloud.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="atmel_start.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="atmel_start.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="Config/clock_config.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="Config/conf_winc.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="Config/cryptoauthlib_config.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="Config/RTE_Components.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="driver_isr.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/atmel_start_pins.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/bod.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/ccp.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/clkctrl.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/cpuint.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/driver_init.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/port.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/protected_io.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/rstctrl.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/slpctrl.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/spi_basic.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="include/system.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="sensors_handling.h"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="main.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="sensors_handling.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/bod.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/clkctrl.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/cpuint.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/driver_init.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/protected_io.S"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/slpctrl.c"/>
-        <file category="source" condition="ARMCC, GCC, IAR" name="src/spi_basic.c"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/assembler.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/assembler/gas.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/assembler/iar.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/atomic.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/compiler.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/interrupt_avr8.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/utils.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="utils/utils_assert.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/tls/atcatls.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/tls/atcatls.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/tls/atcatls_cfg.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/tls/atcatls_cfg.h"/>
+        <file category="other" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/tls/ec_cert-508.csr"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_comm_bsd/mqtt_comm_layer.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_comm_bsd/mqtt_comm_layer.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_config.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_core/mqtt_core.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_core/mqtt_core.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_debug.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_exchange_buffer/mqtt_exchange_buffer.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_exchange_buffer/mqtt_exchange_buffer.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_packetTransfer_interface.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_packetTransfer_interface.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="winc/bsp/include/nm_bsp.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="winc/bsp/include/nm_bsp_internal.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="winc/bsp/include/nm_bsp_mega.h"/>
@@ -238,20 +202,33 @@
         <file category="header" condition="ARMCC, GCC, IAR" name="winc/spi_flash/include/spi_flash.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="winc/spi_flash/include/spi_flash_map.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="winc/spi_flash/source/spi_flash.c"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/adc.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/adc_basic.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/generator/doxyfile.doxygen"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/generator/DoxygenLayout.xml"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/i2c.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/i2c_master.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/mainpage.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/spi.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/spi_basic.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/system.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/timeout.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/timer.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/usart.dox"/>
-        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/usart_basic.dox"/>
+        <file category="doc" condition="ARMCC, GCC, IAR" name="START_files/Docs/AVR_IoT_WG_Sensor_Node.rst"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="application_manager.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="application_manager.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="banner.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="debug_print.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="debug_print.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="led.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="led.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="main.c"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="sensors_handling.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="sensors_handling.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="Config/conf_winc.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="Config/cryptoauthlib_config.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/cloud_service.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/cloud_service.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/wifi_service.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/wifi_service.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/bsd_adapter/bsdWINC.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/bsd_adapter/bsdWINC.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/cryptoauthlib_main.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/cryptoauthlib_main.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/crypto_client.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/crypto_client.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="cloud/mqtt_packetPopulation/mqtt_packetPopulate.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="cloud/mqtt_packetPopulation/mqtt_packetPopulate.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="credentials_storage/credentials_storage.c"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="credentials_storage/credentials_storage.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/driver_init.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/driver_init.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/atmel_start_pins.h"/>
@@ -263,6 +240,8 @@
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/adc_basic.dox"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/i2c.dox"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/i2c_master.dox"/>
+        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/spi.dox"/>
+        <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/spi_basic.dox"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/system.dox"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/timeout.dox"/>
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/timer.dox"/>
@@ -270,10 +249,12 @@
         <file category="other" condition="ARMCC, GCC, IAR" name="doxygen/usart_basic.dox"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="examples/include/adc_basic_example.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="examples/include/i2c_master_example.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="examples/include/spi_basic_example.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="examples/include/timeout_example.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="examples/include/usart_basic_example.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="examples/src/adc_basic_example.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="examples/src/i2c_master_example.c"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="examples/src/spi_basic_example.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="examples/src/timeout_example.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="examples/src/usart_basic_example.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/adc_basic.h"/>
@@ -288,6 +269,7 @@
         <file category="header" condition="ARMCC, GCC, IAR" name="include/protected_io.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/rstctrl.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/slpctrl.h"/>
+        <file category="header" condition="ARMCC, GCC, IAR" name="include/spi_basic.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/system.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/timeout.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/usart_basic.h"/>
@@ -300,6 +282,7 @@
         <file category="source" condition="ARMCC, GCC, IAR" name="src/i2c_types.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/protected_io.S"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/slpctrl.c"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="src/spi_basic.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/timeout.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/usart_basic.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="utils/assembler.h"/>
@@ -319,50 +302,8 @@
         <file category="include" condition="ARMCC, GCC, IAR" name="include"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="utils"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="utils/assembler"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/cli"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/app"/>
+        <file category="include" condition="ARMCC, GCC, IAR" name="cli"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/atcacert"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/basic"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/crypto"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/crypto/hashes"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/hal"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/host"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib/jwt"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="umqtt"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/mqtt_client/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/network_control/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/credentials_storage/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/crypto_client/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cloud/core/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="Config/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="doxygen/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="doxygen/generator/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="include/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="src/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="utils/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="utils/assembler/"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bsp"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bsp/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bsp/source"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bus_wrapper"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bus_wrapper/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/bus_wrapper/source"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/common"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/common/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/common/source"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/driver"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/driver/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/driver/source"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/spi_flash"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/socket"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/programmer"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/socket/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/socket/source"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/spi_flash/include"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="winc/spi_flash/source"/>
         <file category="include" condition="ARMCC, GCC, IAR" name=""/>
       </files>
     </component>

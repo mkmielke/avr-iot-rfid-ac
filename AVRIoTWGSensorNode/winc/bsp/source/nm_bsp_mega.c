@@ -85,9 +85,6 @@ sint8 nm_bsp_init(void)
 	/* Initialize chip IOs. */
 	init_chip_pins();
 
-	/* Initialize the delay driver. */
-	// delay_init();
-
 	/* Perform chip reset. */
 	nm_bsp_reset();
 
@@ -115,10 +112,11 @@ void nm_bsp_reset(void)
 {
 	CONF_WIFI_M2M_CHIP_ENABLE_PIN_set_level(false);
 	CONF_WIFI_M2M_RESET_PIN_set_level(false);
-	nm_bsp_sleep(1);
-	CONF_WIFI_M2M_CHIP_ENABLE_PIN_set_level(true);
 	nm_bsp_sleep(10);
+	CONF_WIFI_M2M_CHIP_ENABLE_PIN_set_level(true);
+	nm_bsp_sleep(20);
 	CONF_WIFI_M2M_RESET_PIN_set_level(true);
+	nm_bsp_sleep(100);
 }
 
 /*

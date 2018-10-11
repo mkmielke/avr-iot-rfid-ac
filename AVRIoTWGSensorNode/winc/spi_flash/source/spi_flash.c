@@ -233,7 +233,7 @@ static sint8 spi_flash_load_to_cortus_mem(uint32 u32MemAdr, uint32 u32FlashAdr, 
 	cmd[4] = 0xA5;
 
 	ret += nm_write_reg(SPI_FLASH_DATA_CNT, u32Sz);
-	ret += nm_write_reg(SPI_FLASH_BUF1, cmd[0] | (cmd[1] << 8) | (cmd[2] << 16) | (cmd[3] << 24));
+	ret += nm_write_reg(SPI_FLASH_BUF1, cmd[0] | (cmd[1] << 8) | (((uint32)cmd[2]) << 16) | (((uint32)cmd[3]) << 24));
 	ret += nm_write_reg(SPI_FLASH_BUF2, cmd[4]);
 	ret += nm_write_reg(SPI_FLASH_BUF_DIR, 0x1f);
 	ret += nm_write_reg(SPI_FLASH_DMA_ADDR, u32MemAdr);
@@ -257,19 +257,26 @@ static sint8 spi_flash_load_to_cortus_mem(uint32 u32MemAdr, uint32 u32FlashAdr, 
  *	@author		M. Abdelmawla
  *	@version	1.0
  */
+volatile uint8 cmd[4];
+
 static sint8 spi_flash_sector_erase(uint32 u32FlashAdr)
 {
-	uint8  cmd[4];
-	uint32 val = 0;
-	sint8  ret = M2M_SUCCESS;
+	uint32 val   = 0;
+	uint32 value = 0;
+	sint8  ret   = M2M_SUCCESS;
 
 	cmd[0] = 0x20;
-	cmd[1] = (uint8)(u32FlashAdr >> 16);
-	cmd[2] = (uint8)(u32FlashAdr >> 8);
-	cmd[3] = (uint8)(u32FlashAdr);
+	cmd[1] = (uint8)((u32FlashAdr) >> 16);
+	cmd[2] = (uint8)((u32FlashAdr) >> 8);
+	cmd[3] = (uint8)((u32FlashAdr));
+
+	value = ((uint32)cmd[0]);
+	value |= ((uint32)cmd[1]) << 8;
+	value |= ((uint32)cmd[2]) << 16;
+	value |= ((uint32)cmd[3]) << 24;
 
 	ret += nm_write_reg(SPI_FLASH_DATA_CNT, 0);
-	ret += nm_write_reg(SPI_FLASH_BUF1, cmd[0] | (cmd[1] << 8) | (cmd[2] << 16) | (cmd[3] << 24));
+	ret += nm_write_reg(SPI_FLASH_BUF1, value);
 	ret += nm_write_reg(SPI_FLASH_BUF_DIR, 0x0f);
 	ret += nm_write_reg(SPI_FLASH_DMA_ADDR, 0);
 	ret += nm_write_reg(SPI_FLASH_CMD_CNT, 4 | (1 << 7));
@@ -365,7 +372,7 @@ static sint8 spi_flash_page_program(uint32 u32MemAdr, uint32 u32FlashAdr, uint32
 	cmd[3] = (uint8)(u32FlashAdr);
 
 	ret += nm_write_reg(SPI_FLASH_DATA_CNT, 0);
-	ret += nm_write_reg(SPI_FLASH_BUF1, cmd[0] | (cmd[1] << 8) | (cmd[2] << 16) | (cmd[3] << 24));
+	ret += nm_write_reg(SPI_FLASH_BUF1, cmd[0] | (cmd[1] << 8) | (((uint32)cmd[2]) << 16) | (((uint32)cmd[3]) << 24));
 	ret += nm_write_reg(SPI_FLASH_BUF_DIR, 0x0f);
 	ret += nm_write_reg(SPI_FLASH_DMA_ADDR, u32MemAdr);
 	ret += nm_write_reg(SPI_FLASH_CMD_CNT, 4 | (1 << 7) | ((u32Sz & 0xfffff) << 8));

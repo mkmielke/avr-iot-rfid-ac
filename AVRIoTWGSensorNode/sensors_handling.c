@@ -1,7 +1,7 @@
 /*
-    \file   mcp9808.c
+    \file   sensors_handling.c
 
-    \brief  MCP9808 handler source file.
+    \brief  Sensors handling handler source file.
 
     (c) 2018 Microchip Technology Inc. and its subsidiaries.
 
@@ -30,18 +30,21 @@
 #include "adc_basic.h"
 #include "i2c_simple_master.h"
 
-uint16_t sensors_GetLightValue(void)
+#define MCP9809_ADDR 0x18
+#define MCP9808_REG_TA 0x05
+#define LIGHT_SENSOR_ADC_CHANNEL 5
+
+uint16_t SENSORS_getLightValue(void)
 {
-	return ADC_0_get_conversion(5);
+	return ADC_0_get_conversion(LIGHT_SENSOR_ADC_CHANNEL);
 }
 
-int16_t sensors_GetTempValue(void)
+int16_t SENSORS_getTempValue(void)
 {
 	int32_t temperature;
 
 	temperature = I2C_0_read2ByteRegister(MCP9809_ADDR, MCP9808_REG_TA);
 
-	// store sign:
 	temperature = temperature << 19;
 	temperature = temperature >> 19;
 

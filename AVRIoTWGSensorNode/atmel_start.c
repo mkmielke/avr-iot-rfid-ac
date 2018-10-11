@@ -6,6 +6,4 @@
 void atmel_start_init(void)
 {
 	system_init();
-
-	cryptoauthlib_init();
 }

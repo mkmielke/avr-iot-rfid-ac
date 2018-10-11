@@ -90,7 +90,7 @@ static inline void PORTA_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -231,7 +231,7 @@ static inline void PORTA_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTA_toggle_pin_level(const uint8_t pin)
 {
-	PORTA.OUTTGL = 1 << pin;
+	VPORTA.IN |= 1 << pin;
 }
 
 /**
@@ -312,7 +312,7 @@ static inline void PORTB_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -453,7 +453,7 @@ static inline void PORTB_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTB_toggle_pin_level(const uint8_t pin)
 {
-	PORTB.OUTTGL = 1 << pin;
+	VPORTB.IN |= 1 << pin;
 }
 
 /**
@@ -534,7 +534,7 @@ static inline void PORTC_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -675,7 +675,7 @@ static inline void PORTC_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTC_toggle_pin_level(const uint8_t pin)
 {
-	PORTC.OUTTGL = 1 << pin;
+	VPORTC.IN |= 1 << pin;
 }
 
 /**
@@ -756,7 +756,7 @@ static inline void PORTD_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -897,7 +897,7 @@ static inline void PORTD_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTD_toggle_pin_level(const uint8_t pin)
 {
-	PORTD.OUTTGL = 1 << pin;
+	VPORTD.IN |= 1 << pin;
 }
 
 /**
@@ -978,7 +978,7 @@ static inline void PORTE_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -1119,7 +1119,7 @@ static inline void PORTE_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTE_toggle_pin_level(const uint8_t pin)
 {
-	PORTE.OUTTGL = 1 << pin;
+	VPORTE.IN |= 1 << pin;
 }
 
 /**
@@ -1200,7 +1200,7 @@ static inline void PORTF_pin_set_inverted(const uint8_t pin, const bool inverted
  * select pin interrupt edge/level sensing mode
  *
  * \param[in] pin pin number within port
- * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Interrupt disabled but input buffer enabled
  *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
  *                PORT_ISC_RISING_gc        = Sense Rising Edge
  *                PORT_ISC_FALLING_gc       = Sense Falling Edge
@@ -1341,7 +1341,7 @@ static inline void PORTF_toggle_port_level(const uint8_t mask)
  */
 static inline void PORTF_toggle_pin_level(const uint8_t pin)
 {
-	PORTF.OUTTGL = 1 << pin;
+	VPORTF.IN |= 1 << pin;
 }
 
 /**

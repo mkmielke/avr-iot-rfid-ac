@@ -210,8 +210,6 @@ void I2C_0_init()
 	              | 0 << TWI_SMEN_bp        /* Smart Mode Enable: disabled */
 	              | TWI_TIMEOUT_DISABLED_gc /* Bus Timeout Disabled */
 	              | 1 << TWI_WIEN_bp;       /* Write Interrupt Enable: enabled */
-
-	TWI0.MSTATUS = 0 << TWI_BUSSTATE0_bp; /* Bus State: disabled */
 }
 
 /**
@@ -275,9 +273,9 @@ void I2C_0_set_address(i2c_address_t address)
  * \brief Close the I2C interface
  *
  * \return Status of close operation.
- * \retval I2C_NOERR The I2C open was successful
- * \retval I2C_BUSY  The I2C open failed because the interface is busy
- * \retval I2C_FAIL  The I2C open failed with an error
+ * \retval I2C_NOERR The I2C close was successful
+ * \retval I2C_BUSY  The I2C close failed because the interface is busy
+ * \retval I2C_FAIL  The I2C close failed with an error
  */
 i2c_error_t I2C_0_close(void)
 {

@@ -63,8 +63,8 @@
  * \brief Enter a critical region
  * 
  * Saves the contents of the status register, including the Global 
- * Interupt Enable bit, so that it can be restored upon leaving the 
- * critical region. Therafter, clears the Global Interrupt Enable Bit.
+ * Interrupt Enable bit, so that it can be restored upon leaving the 
+ * critical region. Thereafter, clears the Global Interrupt Enable Bit.
  * This macro takes a parameter P that is unused for the GCC compiler,
  * but necessary for code compatibility with the IAR compiler. The IAR
  * compiler declares a variable with the name of the parameter for
@@ -88,7 +88,7 @@
  * \brief Exit a critical region
  * 
  * Restores the contents of the status register, including the Global 
- * Interupt Enable bit, as it was when entering the critical region.
+ * Interrupt Enable bit, as it was when entering the critical region.
  * This macro takes a parameter P that is unused for the GCC compiler,
  * but necessary for code compatibility with the IAR compiler. The IAR
  * compiler uses this parameter as the name of a variable that holds 

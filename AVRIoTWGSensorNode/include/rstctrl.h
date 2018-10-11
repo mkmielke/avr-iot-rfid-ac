@@ -46,7 +46,7 @@ extern "C" {
 
 static inline void RSTCTRL_reset(void)
 {
-	/* SWRR is protectd with CCP */
+	/* SWRR is protected with CCP */
 	ccp_write_io((void *)&RSTCTRL.SWRR, 0x1);
 }
 

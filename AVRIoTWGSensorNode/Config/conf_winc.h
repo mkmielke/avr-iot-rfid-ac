@@ -92,10 +92,10 @@ extern "C" {
 
 /** Debug Options */
 #define CONF_WIFI_M2M_DEBUG (0)
-#define CONF_WIFI_M2M_PRINTF printf
+#define CONF_WIFI_M2M_debug_print printf
 
 // #define CONF_WINC_DEBUG					(1)
-// #define CONF_WINC_PRINTF				printf
+// #define CONF_WINC_debug_print				printf
 
 #ifdef __cplusplus
 }

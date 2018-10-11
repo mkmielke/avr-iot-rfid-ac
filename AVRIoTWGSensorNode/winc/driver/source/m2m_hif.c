@@ -474,9 +474,9 @@ static sint8 hif_isr(void)
 					if (gstrHifCxt.pfIpCb)
 						gstrHifCxt.pfIpCb(
 						    strHif.u8Opcode, strHif.u16Length - M2M_HIF_HDR_OFFSET, address + M2M_HIF_HDR_OFFSET);
-					else
+					else {
 						M2M_ERR("Scoket callback is not registered\n");
-
+					}
 				} else if (M2M_REQ_GROUP_OTA == strHif.u8Gid) {
 					if (gstrHifCxt.pfOtaCb)
 						gstrHifCxt.pfOtaCb(
