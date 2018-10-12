@@ -21,9 +21,9 @@ application:
     main_wlan_psk: microchip
     main_wlan_ssid: MCHP.IOT
     mqtt_host: mqtt.googleapis.com
-    project_id: avr-iot
+    project_id: avr-iot-ac
     project_region: us-central1
-    registry_id: AVR-IOT
+    registry_id: scanner
 middlewares:
   Crypto_Authentication_IOTSensor_Node:
     user_label: Crypto_Authentication_IOTSensor_Node

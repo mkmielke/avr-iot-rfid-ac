@@ -46,7 +46,7 @@
 // <s> project id
 // <i> Google Cloud Platform project id
 // <id> project_id
-#define CFG_PROJECT_ID "avr-iot"
+#define CFG_PROJECT_ID "avr-iot-ac"
 
 // <s> project region
 // <i> Google Cloud Platform project region
@@ -56,7 +56,7 @@
 // <s> registry id
 // <i> Google Cloud Platform registry id
 // <id> registry_id
-#define CFG_REGISTRY_ID "AVR-IOT"
+#define CFG_REGISTRY_ID "scanner"
 
 // <s> mqtt host
 // <i> mqtt host address
