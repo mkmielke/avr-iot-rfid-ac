@@ -493,6 +493,7 @@ bool MQTT_CreateSubscribePacket(mqttSubscribePacket *newSubscribePacket)
 
 	// TODO: Check that there is a topic/payload...
 	if (mqttState == CONNECTED) {
+		debug_printInfo("MQTT: SubscribeBuild");
 		// Fixed header
 		// MQTT-3.8.1-1: Bits 3,2,1,0 of fixed header MUST be set as 0010, else Server MUST treat as malformed
 		txSubscribePacket.subscribeHeaderFlags.controlPacketType = SUBSCRIBE;
