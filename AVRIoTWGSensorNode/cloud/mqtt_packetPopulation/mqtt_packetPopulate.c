@@ -36,10 +36,13 @@
 
 #define MQTT_CID_LENGTH 100
 #define MQTT_TOPIC_LENGTH 38
+#define MQTT_SUBSCRIBE_LENGTH 41
+#define MQTT_SUBSCRIBE_PACKET_ID 1234 // arbitrary value
 
 char mqttPassword[456];
 char cid[MQTT_CID_LENGTH];
 char mqttTopic[MQTT_TOPIC_LENGTH];
+char mqttSubscribe[MQTT_SUBSCRIBE_LENGTH]; // Note: set in updateJWT() - cloud_service.c
 char mqttHostName[] = "mqtt.googleapis.com";
 
 void MQTT_CLIENT_publish(uint8_t *data, uint16_t len)
@@ -64,6 +67,35 @@ void MQTT_CLIENT_publish(uint8_t *data, uint16_t len)
 	}
 }
 
+// set parameters for subscribe packet and call the create() function
+void MQTT_CLIENT_subscribe( void )
+{
+	mqttSubscribePacket cloudSubscribePacket;
+	
+	// Fixed header
+	cloudSubscribePacket.subscribeHeaderFlags.duplicate = 0;
+	cloudSubscribePacket.subscribeHeaderFlags.qos       = 1;
+	cloudSubscribePacket.subscribeHeaderFlags.retain    = 0;
+	
+	// Variable header
+	cloudSubscribePacket.packetIdentifierMSB = ( MQTT_SUBSCRIBE_PACKET_ID >> 8 ) & 0xFF;
+	cloudSubscribePacket.packetIdentifierLSB = MQTT_SUBSCRIBE_PACKET_ID & 0xFF;
+	
+	// Payload
+	cloudSubscribePacket.subscribePayload[0].requestedQoS = 0;
+	cloudSubscribePacket.subscribePayload[0].topic = (uint8_t*)mqttSubscribe;
+	cloudSubscribePacket.subscribePayload[0].topicLength = strlen( mqttSubscribe );
+	
+	cloudSubscribePacket.subscribePayload[1].requestedQoS = 0;
+	cloudSubscribePacket.subscribePayload[1].topic[0] = '\0';
+	cloudSubscribePacket.subscribePayload[1].topicLength = 0;
+	
+	if ( MQTT_CreateSubscribePacket( &cloudSubscribePacket ) != true ) 
+	{
+		debug_printError( "MQTT: Connection lost SUBSCRIBE failed" );
+	}
+}
+
 void MQTT_CLIENT_receive(uint8_t *data, uint8_t len)
 {
 	MQTT_GetReceivedData(data, len);
@@ -85,4 +117,10 @@ void MQTT_CLIENT_connect(void)
 	cloudConnectPacket.usernameLength                             = 0;
 
 	MQTT_CreateConnectPacket(&cloudConnectPacket);
+}
+
+// process the incoming data from subscriptions
+void MQTT_CLIENT_process_data( uint8_t* topic, uint8_t* payload )
+{
+	debug_printInfo( "MQTT: Processing Topic: %s Payload: %s", topic, payload );
 }

@@ -47,10 +47,13 @@
 #include "include/timeout.h"
 #include "cloud/mqtt_packetPopulation/mqtt_packetPopulate.h"
 #include "mqtt/mqtt_core/mqtt_core.h"
+#include "mqtt/mqtt_packetTransfer_interface.h"
+#include "mqtt/mqtt_config.h"
 #include "credentials_storage/credentials_storage.h"
 
 static bool cloudInitialized = false;
 static bool waitingForMQTT   = false;
+static bool resubscribe      = true;  // true when we need to subscribe to topic
 
 const char projectId[]     = CFG_PROJECT_ID;
 const char projectRegion[] = CFG_PROJECT_REGION;
@@ -78,6 +81,9 @@ timer_struct_t mqttTimeoutTaskTimer = {mqttTimeoutTask};
 uint32_t mqttGoogleApisComIP;
 
 packetReceptionHandler_t cloud_packetReceiveCallBackTable[CLOUD_PACKET_RECV_TABLE_SIZE];
+
+// callbacks for when we receive a PUBLISH packet from our subscriptions
+publishReceptionHandler_t cloud_publishReceiveCallBackTable[NUM_TOPICS_SUBSCRIBE]; 
 
 static uint8_t MQTTReceiveBuffer[48];
 
@@ -234,6 +240,7 @@ absolutetime_t CLOUD_task(void *param)
 			// If MQTT was disconnected but the socket is up we retry the MQTT connection
 			if (MQTT_GetConnectionState() == DISCONNECTED) {
 				connectMQTT();
+				resubscribe = true; // after we (re)connect, we must (re)subscribe
 			} else {
 				MQTT_ReceptionHandler(mqttConnnectionInfo);
 				MQTT_TransmissionHandler(mqttConnnectionInfo);
@@ -247,6 +254,13 @@ absolutetime_t CLOUD_task(void *param)
 
 					scheduler_timeout_delete(&mqttTimeoutTaskTimer);
 					waitingForMQTT = false;
+					
+					// resubscribe after the mqtt connection is made
+					if ( resubscribe )
+					{
+						MQTT_CLIENT_subscribe();
+						resubscribe = false;
+					}
 
 					// The Authorization timeout is set to 3600, so we need to re-connect that often
 					if (MQTT_getConnectionAge() > 3600) {
@@ -299,9 +313,14 @@ static void updateJWT(uint32_t epoch)
 
 	sprintf(cid, "projects/%s/locations/%s/registries/%s/devices/%s", projectId, projectRegion, registryId, deviceId);
 	sprintf(mqttTopic, "/devices/%s/events", deviceId);
+	
+	// we must be subscribed to /devices/{device-id}/commands/# (# is REQUIRED) to
+	// receive commands from Cloud IoT Core. 
+	sprintf(mqttSubscribe, "/devices/%s/commands/#", deviceId);
 
 	debug_printInfo("MQTT: cid=%s", cid);
 	debug_printInfo("MQTT: mqttTopic=%s", mqttTopic);
+	debug_printInfo("MQTT: mqttSubscribe=%s", mqttSubscribe);
 	uint8_t res = CRYPTO_CLIENT_createJWT((char *)mqttPassword, PASSWORD_SPACE, epoch, projectId);
 	time_t  t   = time(NULL);
 	debug_printInfo("JWT: Result(%d) at %s", res, ctime(&t));
@@ -318,11 +337,17 @@ static uint8_t reInit(void)
 	registerSocketCallback(BSD_SocketHandler, dnsHandler);
 
 	MQTT_ClientInitialise();
+	
 	memset(&cloud_packetReceiveCallBackTable, 0, sizeof(cloud_packetReceiveCallBackTable));
 	BSD_SetRecvHandlerTable(cloud_packetReceiveCallBackTable);
-
 	cloud_packetReceiveCallBackTable[0].socket       = MQTT_GetClientConnectionInfo()->tcpClientSocket;
 	cloud_packetReceiveCallBackTable[0].recvCallBack = MQTT_CLIENT_receive;
+	
+	// set callback function to handle a received PUBLISH packet (only one subscription)
+	memset( &cloud_publishReceiveCallBackTable, 0, sizeof( cloud_publishReceiveCallBackTable ) );
+	MQTT_SetPublishReceptionHandlerTable( cloud_publishReceiveCallBackTable );
+	cloud_publishReceiveCallBackTable[0].mqttHandlePublishDataCallBack = MQTT_CLIENT_process_data;
+	cloud_publishReceiveCallBackTable[0].topic = (uint8_t*)mqttSubscribe;
 
 	int8_t e;
 	debug_print("CLOUD: credentials %s, %s,%s", ssid, pass, authType);
