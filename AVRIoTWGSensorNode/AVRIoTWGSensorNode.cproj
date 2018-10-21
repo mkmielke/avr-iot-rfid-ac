@@ -206,9 +206,9 @@
           <AcmeProjectActionInfo Action="File" Source="cloud/mqtt_packetPopulation/mqtt_packetPopulate.h" IsConfig="false" Hash="F3NXsAM/YXI9C1zqju4z0A" />
           <AcmeProjectActionInfo Action="File" Source="credentials_storage/credentials_storage.c" IsConfig="false" Hash="jylw17VsRK2QdXNOO0A20A" />
           <AcmeProjectActionInfo Action="File" Source="credentials_storage/credentials_storage.h" IsConfig="false" Hash="4wVh5oZvzq1Yzrz6le4H+Q" />
-          <AcmeProjectActionInfo Action="File" Source="src/driver_init.c" IsConfig="false" Hash="d45yOAiuFPz0PIW56GhVpA" />
+          <AcmeProjectActionInfo Action="File" Source="src/driver_init.c" IsConfig="false" Hash="sV7f0Bgfd+16HqMvxHkcyA" />
           <AcmeProjectActionInfo Action="File" Source="include/driver_init.h" IsConfig="false" Hash="pV4J/u+Q73AMYI16R4tuUA" />
-          <AcmeProjectActionInfo Action="File" Source="include/atmel_start_pins.h" IsConfig="false" Hash="F52q8nt39qLaCMBgDux3Ww" />
+          <AcmeProjectActionInfo Action="File" Source="include/atmel_start_pins.h" IsConfig="false" Hash="iIqwda/XwW076PNpKWJtHA" />
           <AcmeProjectActionInfo Action="File" Source="driver_isr.c" IsConfig="false" Hash="RPVBKpBZfVQn6i4UEJhoAQ" />
           <AcmeProjectActionInfo Action="File" Source="examples/include/adc_basic_example.h" IsConfig="false" Hash="b4YpSTgweb/uQMln8ckLhw" />
           <AcmeProjectActionInfo Action="File" Source="examples/include/i2c_master_example.h" IsConfig="false" Hash="FB8udhw9j++sisfDyUNjzg" />
@@ -406,6 +406,7 @@
     <Folder Include="mqtt\mqtt_comm_bsd\" />
     <Folder Include="mqtt\mqtt_core\" />
     <Folder Include="mqtt\mqtt_exchange_buffer\" />
+    <Folder Include="rfid" />
     <Folder Include="src\" />
     <Folder Include="utils\" />
     <Folder Include="utils\assembler\" />
@@ -891,6 +892,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mqtt\mqtt_packetTransfer_interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rfid\lib_CR95HF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rfid\lib_CR95HF.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rfid\lib_iso15693.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rfid\lib_iso15693.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors_handling.c">

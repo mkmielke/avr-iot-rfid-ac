@@ -11,6 +11,99 @@
 #include <port.h>
 
 /**
+ * \brief Set RFID_CLICK_SSI0 pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void RFID_CLICK_SSI0_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTA_set_pin_pull_mode(0, pull_mode);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI0 data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void RFID_CLICK_SSI0_set_dir(const enum port_dir dir)
+{
+	PORTA_set_pin_dir(0, dir);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI0 input/sense configuration
+ *
+ * Enable/disable RFID_CLICK_SSI0 digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void RFID_CLICK_SSI0_set_isc(const PORT_ISC_t isc)
+{
+	PORTA_pin_set_isc(0, isc);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI0 inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on RFID_CLICK_SSI0 is inverted
+ *                     false = I/O on RFID_CLICK_SSI0 is not inverted
+ */
+static inline void RFID_CLICK_SSI0_set_inverted(const bool inverted)
+{
+	PORTA_pin_set_inverted(0, inverted);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI0 level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void RFID_CLICK_SSI0_set_level(const bool level)
+{
+	PORTA_set_pin_level(0, level);
+}
+
+/**
+ * \brief Toggle output level on RFID_CLICK_SSI0
+ *
+ * Toggle the pin level
+ */
+static inline void RFID_CLICK_SSI0_toggle_level()
+{
+	PORTA_toggle_pin_level(0);
+}
+
+/**
+ * \brief Get level on RFID_CLICK_SSI0
+ *
+ * Reads the level on a pin
+ */
+static inline bool RFID_CLICK_SSI0_get_level()
+{
+	return PORTA_get_pin_level(0);
+}
+
+/**
  * \brief Set CONF_WIFI_M2M_RESET_PIN pull mode
  *
  * Configure pin to pull up, down or disable pull mode, supported pull
@@ -662,6 +755,99 @@ static inline bool CONF_WIFI_M2M_SPI_CS_PIN_get_level()
 }
 
 /**
+ * \brief Set RFID_CLICK_SPI_CS pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void RFID_CLICK_SPI_CS_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTC_set_pin_pull_mode(3, pull_mode);
+}
+
+/**
+ * \brief Set RFID_CLICK_SPI_CS data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void RFID_CLICK_SPI_CS_set_dir(const enum port_dir dir)
+{
+	PORTC_set_pin_dir(3, dir);
+}
+
+/**
+ * \brief Set RFID_CLICK_SPI_CS input/sense configuration
+ *
+ * Enable/disable RFID_CLICK_SPI_CS digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void RFID_CLICK_SPI_CS_set_isc(const PORT_ISC_t isc)
+{
+	PORTC_pin_set_isc(3, isc);
+}
+
+/**
+ * \brief Set RFID_CLICK_SPI_CS inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on RFID_CLICK_SPI_CS is inverted
+ *                     false = I/O on RFID_CLICK_SPI_CS is not inverted
+ */
+static inline void RFID_CLICK_SPI_CS_set_inverted(const bool inverted)
+{
+	PORTC_pin_set_inverted(3, inverted);
+}
+
+/**
+ * \brief Set RFID_CLICK_SPI_CS level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void RFID_CLICK_SPI_CS_set_level(const bool level)
+{
+	PORTC_set_pin_level(3, level);
+}
+
+/**
+ * \brief Toggle output level on RFID_CLICK_SPI_CS
+ *
+ * Toggle the pin level
+ */
+static inline void RFID_CLICK_SPI_CS_toggle_level()
+{
+	PORTC_toggle_pin_level(3);
+}
+
+/**
+ * \brief Get level on RFID_CLICK_SPI_CS
+ *
+ * Reads the level on a pin
+ */
+static inline bool RFID_CLICK_SPI_CS_get_level()
+{
+	return PORTC_get_pin_level(3);
+}
+
+/**
  * \brief Set LED_RED pull mode
  *
  * Configure pin to pull up, down or disable pull mode, supported pull
@@ -1034,6 +1220,99 @@ static inline bool LED_BLUE_get_level()
 }
 
 /**
+ * \brief Set RFID_CLICK_INT_I pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void RFID_CLICK_INT_I_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTD_set_pin_pull_mode(4, pull_mode);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_I data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void RFID_CLICK_INT_I_set_dir(const enum port_dir dir)
+{
+	PORTD_set_pin_dir(4, dir);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_I input/sense configuration
+ *
+ * Enable/disable RFID_CLICK_INT_I digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void RFID_CLICK_INT_I_set_isc(const PORT_ISC_t isc)
+{
+	PORTD_pin_set_isc(4, isc);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_I inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on RFID_CLICK_INT_I is inverted
+ *                     false = I/O on RFID_CLICK_INT_I is not inverted
+ */
+static inline void RFID_CLICK_INT_I_set_inverted(const bool inverted)
+{
+	PORTD_pin_set_inverted(4, inverted);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_I level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void RFID_CLICK_INT_I_set_level(const bool level)
+{
+	PORTD_set_pin_level(4, level);
+}
+
+/**
+ * \brief Toggle output level on RFID_CLICK_INT_I
+ *
+ * Toggle the pin level
+ */
+static inline void RFID_CLICK_INT_I_toggle_level()
+{
+	PORTD_toggle_pin_level(4);
+}
+
+/**
+ * \brief Get level on RFID_CLICK_INT_I
+ *
+ * Reads the level on a pin
+ */
+static inline bool RFID_CLICK_INT_I_get_level()
+{
+	return PORTD_get_pin_level(4);
+}
+
+/**
  * \brief Set PD5 pull mode
  *
  * Configure pin to pull up, down or disable pull mode, supported pull
@@ -1124,6 +1403,192 @@ static inline void PD5_toggle_level()
 static inline bool PD5_get_level()
 {
 	return PORTD_get_pin_level(5);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_O pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void RFID_CLICK_INT_O_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTD_set_pin_pull_mode(6, pull_mode);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_O data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void RFID_CLICK_INT_O_set_dir(const enum port_dir dir)
+{
+	PORTD_set_pin_dir(6, dir);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_O input/sense configuration
+ *
+ * Enable/disable RFID_CLICK_INT_O digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void RFID_CLICK_INT_O_set_isc(const PORT_ISC_t isc)
+{
+	PORTD_pin_set_isc(6, isc);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_O inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on RFID_CLICK_INT_O is inverted
+ *                     false = I/O on RFID_CLICK_INT_O is not inverted
+ */
+static inline void RFID_CLICK_INT_O_set_inverted(const bool inverted)
+{
+	PORTD_pin_set_inverted(6, inverted);
+}
+
+/**
+ * \brief Set RFID_CLICK_INT_O level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void RFID_CLICK_INT_O_set_level(const bool level)
+{
+	PORTD_set_pin_level(6, level);
+}
+
+/**
+ * \brief Toggle output level on RFID_CLICK_INT_O
+ *
+ * Toggle the pin level
+ */
+static inline void RFID_CLICK_INT_O_toggle_level()
+{
+	PORTD_toggle_pin_level(6);
+}
+
+/**
+ * \brief Get level on RFID_CLICK_INT_O
+ *
+ * Reads the level on a pin
+ */
+static inline bool RFID_CLICK_INT_O_get_level()
+{
+	return PORTD_get_pin_level(6);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI1 pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void RFID_CLICK_SSI1_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTD_set_pin_pull_mode(7, pull_mode);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI1 data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void RFID_CLICK_SSI1_set_dir(const enum port_dir dir)
+{
+	PORTD_set_pin_dir(7, dir);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI1 input/sense configuration
+ *
+ * Enable/disable RFID_CLICK_SSI1 digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void RFID_CLICK_SSI1_set_isc(const PORT_ISC_t isc)
+{
+	PORTD_pin_set_isc(7, isc);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI1 inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on RFID_CLICK_SSI1 is inverted
+ *                     false = I/O on RFID_CLICK_SSI1 is not inverted
+ */
+static inline void RFID_CLICK_SSI1_set_inverted(const bool inverted)
+{
+	PORTD_pin_set_inverted(7, inverted);
+}
+
+/**
+ * \brief Set RFID_CLICK_SSI1 level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void RFID_CLICK_SSI1_set_level(const bool level)
+{
+	PORTD_set_pin_level(7, level);
+}
+
+/**
+ * \brief Toggle output level on RFID_CLICK_SSI1
+ *
+ * Toggle the pin level
+ */
+static inline void RFID_CLICK_SSI1_toggle_level()
+{
+	PORTD_toggle_pin_level(7);
+}
+
+/**
+ * \brief Get level on RFID_CLICK_SSI1
+ *
+ * Reads the level on a pin
+ */
+static inline bool RFID_CLICK_SSI1_get_level()
+{
+	return PORTD_get_pin_level(7);
 }
 
 /**

@@ -206,6 +206,18 @@ void system_init()
 {
 	mcu_init();
 
+	/* PORT setting on PA0 */
+
+	// Set pin direction to output
+	RFID_CLICK_SSI0_set_dir(PORT_DIR_OUT);
+
+	RFID_CLICK_SSI0_set_level(
+	    // <y> Initial level
+	    // <id> pad_initial_level
+	    // <false"> Low
+	    // <true"> High
+	    false);
+
 	/* PORT setting on PA1 */
 
 	// Set pin direction to output
@@ -229,6 +241,18 @@ void system_init()
 	    // <false"> Low
 	    // <true"> High
 	    true);
+
+	/* PORT setting on PC3 */
+
+	// Set pin direction to output
+	RFID_CLICK_SPI_CS_set_dir(PORT_DIR_OUT);
+
+	RFID_CLICK_SPI_CS_set_level(
+	    // <y> Initial level
+	    // <id> pad_initial_level
+	    // <false"> Low
+	    // <true"> High
+	    false);
 
 	/* PORT setting on PD0 */
 
@@ -272,6 +296,42 @@ void system_init()
 	LED_BLUE_set_dir(PORT_DIR_OUT);
 
 	LED_BLUE_set_level(
+	    // <y> Initial level
+	    // <id> pad_initial_level
+	    // <false"> Low
+	    // <true"> High
+	    false);
+
+	/* PORT setting on PD4 */
+
+	// Set pin direction to output
+	RFID_CLICK_INT_I_set_dir(PORT_DIR_OUT);
+
+	RFID_CLICK_INT_I_set_level(
+	    // <y> Initial level
+	    // <id> pad_initial_level
+	    // <false"> Low
+	    // <true"> High
+	    true);
+
+	/* PORT setting on PD6 */
+
+	// Set pin direction to input
+	RFID_CLICK_INT_O_set_dir(PORT_DIR_IN);
+
+	RFID_CLICK_INT_O_set_pull_mode(
+	    // <y> Pull configuration
+	    // <id> pad_pull_config
+	    // <PORT_PULL_OFF"> Off
+	    // <PORT_PULL_UP"> Pull-up
+	    PORT_PULL_OFF);
+
+	/* PORT setting on PD7 */
+
+	// Set pin direction to output
+	RFID_CLICK_SSI1_set_dir(PORT_DIR_OUT);
+
+	RFID_CLICK_SSI1_set_level(
 	    // <y> Initial level
 	    // <id> pad_initial_level
 	    // <false"> Low

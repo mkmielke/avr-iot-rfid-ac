@@ -388,6 +388,12 @@ pads:
     user_label: CONF_WIFI_M2M_SPI_CS_PIN
     configuration:
       pad_initial_level: High
+  RFID_CLICK_SPI_CS:
+    name: PC3
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PC3
+    mode: Digital output
+    user_label: RFID_CLICK_SPI_CS
+    configuration: null
   LED_RED:
     name: PD0
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD0
@@ -412,11 +418,30 @@ pads:
     mode: Digital output
     user_label: LED_BLUE
     configuration: null
+  RFID_CLICK_INT_I:
+    name: PD4
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD4
+    mode: Digital output
+    user_label: RFID_CLICK_INT_I
+    configuration:
+      pad_initial_level: High
   PD5:
     name: PD5
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD5
     mode: Analog
     user_label: PD5
+    configuration: null
+  RFID_CLICK_INT_O:
+    name: PD6
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD6
+    mode: Digital input
+    user_label: RFID_CLICK_INT_O
+    configuration: null
+  RFID_CLICK_SSI1:
+    name: PD7
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PD7
+    mode: Digital output
+    user_label: RFID_CLICK_SSI1
     configuration: null
   PF0:
     name: PF0
@@ -463,6 +488,12 @@ pads:
     user_label: SW0
     configuration:
       pad_pull_config: Pull-up
+  RFID_CLICK_SSI0:
+    name: PA0
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PA0
+    mode: Digital output
+    user_label: RFID_CLICK_SSI0
+    configuration: null
   CONF_WIFI_M2M_RESET_PIN:
     name: PA1
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PA1
