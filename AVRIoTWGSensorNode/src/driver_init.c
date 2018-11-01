@@ -216,7 +216,7 @@ void system_init()
 	    // <id> pad_initial_level
 	    // <false"> Low
 	    // <true"> High
-	    false);
+	    true);
 
 	/* PORT setting on PA1 */
 
@@ -252,7 +252,7 @@ void system_init()
 	    // <id> pad_initial_level
 	    // <false"> Low
 	    // <true"> High
-	    false);
+	    true);
 
 	/* PORT setting on PD0 */
 
