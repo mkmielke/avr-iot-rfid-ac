@@ -38,17 +38,15 @@
 #include "Config/IoT_Sensor_Node_config.h"
 #include "cloud/crypto_client/crypto_client.h"
 #include "cloud/crypto_client/cryptoauthlib_main.h"
-#include "led.h"
 #include "debug_print.h"
-#include "winc/driver/include/m2m_wifi.h"
-#include "application_manager.h"
-#include "cloud/bsd_adapter/bsdWINC.h"
-#include "winc/socket/include/socket.h"
 #include "include/timeout.h"
 #include "cloud/mqtt_packetPopulation/mqtt_packetPopulate.h"
 #include "mqtt/mqtt_core/mqtt_core.h"
 #include "mqtt/mqtt_packetTransfer_interface.h"
 #include "mqtt/mqtt_config.h"
+#include "wifi_service.h"
+
+#include "application_manager.h"
 #include "credentials_storage/credentials_storage.h"
 
 static bool cloudInitialized = false;
@@ -63,6 +61,7 @@ char       deviceId[CLOUD_MAX_DEVICEID_LENGTH];
 // Scheduler Callback functions
 absolutetime_t CLOUD_task(void *param);
 absolutetime_t mqttTimeoutTask(void *payload);
+absolutetime_t cloudResetTask(void *payload);
 
 static void dnsHandler(uint8 *domainName, uint32 serverIP);
 static void updateJWT(uint32_t epoch);
@@ -71,12 +70,18 @@ static int8_t  connectMQTTSocket(void);
 static void    connectMQTT();
 static uint8_t reInit(void);
 
+bool isResetting         = false;
+bool cloudResetTimerFlag = false;
 #define CLOUD_TASK_INTERVAL 500L
 #define CLOUD_MQTT_TIMEOUT_COUNT 10000L // 10 seconds
+#define MQTT_CONN_AGE_TIMEOUT 6000L
+#define CLOUD_RESET_TIMEOUT 4000L
 
 // Create the timers for scheduler_timeout which runs these tasks
 timer_struct_t CLOUD_taskTimer      = {CLOUD_task};
 timer_struct_t mqttTimeoutTaskTimer = {mqttTimeoutTask};
+
+timer_struct_t cloudResetTaskTimer = {cloudResetTask};
 
 uint32_t mqttGoogleApisComIP;
 
@@ -100,6 +105,13 @@ absolutetime_t mqttTimeoutTask(void *payload)
 
 	waitingForMQTT = false;
 
+	return 0;
+}
+
+absolutetime_t cloudResetTask(void *payload)
+{
+	debug_printError("CLOUD: Reset task");
+	cloudInitialized = reInit();
 	return 0;
 }
 
@@ -190,11 +202,18 @@ absolutetime_t CLOUD_task(void *param)
 	socketState_t socketState;
 
 	if (!cloudInitialized) {
-		cloudInitialized = reInit();
+		if (!isResetting) {
+			isResetting = true;
+			debug_printError("CLOUD: Cloud reset timer is set");
+			scheduler_timeout_delete(&mqttTimeoutTaskTimer);
+			scheduler_timeout_create(&cloudResetTaskTimer, CLOUD_RESET_TIMEOUT);
+			cloudResetTimerFlag = true;
+		}
 	} else {
 		if (!waitingForMQTT) {
-			if (MQTT_GetConnectionState() != CONNECTED) {
+			if ((MQTT_GetConnectionState() != CONNECTED) && (cloudResetTimerFlag == false)) {
 				// Start the MQTT connection timeout
+				debug_printError("MQTT: MQTT reset timer is created");
 				scheduler_timeout_create(&mqttTimeoutTaskTimer, CLOUD_MQTT_TIMEOUT_COUNT);
 				waitingForMQTT = true;
 			}
@@ -251,8 +270,8 @@ absolutetime_t CLOUD_task(void *param)
 
 				if (MQTT_GetConnectionState() == CONNECTED) {
 					shared_networking_params.haveERROR = 0;
-
 					scheduler_timeout_delete(&mqttTimeoutTaskTimer);
+					scheduler_timeout_delete(&cloudResetTaskTimer);
 					waitingForMQTT = false;
 					
 					// resubscribe after the mqtt connection is made
@@ -263,7 +282,11 @@ absolutetime_t CLOUD_task(void *param)
 					}
 
 					// The Authorization timeout is set to 3600, so we need to re-connect that often
-					if (MQTT_getConnectionAge() > 3600) {
+					if (MQTT_getConnectionAge() > MQTT_CONN_AGE_TIMEOUT) {
+						debug_printError("MQTT: Connection aged, Uptime %lus SocketState (%d) MQTT (%d)",
+						                 thisAge,
+						                 socketState,
+						                 MQTT_GetConnectionState());
 						MQTT_Disconnect(mqttConnnectionInfo);
 						BSD_close(*mqttConnnectionInfo->tcpClientSocket);
 					}
@@ -333,6 +356,10 @@ static uint8_t reInit(void)
 	mqttGoogleApisComIP                       = 0;
 	shared_networking_params.haveAPConnection = 0;
 	waitingForMQTT                            = false;
+	isResetting                               = false;
+
+	// Re-init the WiFi
+	wifi_reinit();
 
 	registerSocketCallback(BSD_SocketHandler, dnsHandler);
 
@@ -356,6 +383,12 @@ static uint8_t reInit(void)
 		debug_printError("CLOUD: wifi error = %d", e);
 		shared_networking_params.haveERROR = 1;
 		return false;
+	} else {
+		scheduler_timeout_delete(&cloudResetTaskTimer);
+		debug_printInfo("CLOUD: Cloud reset timer is deleted");
+		scheduler_timeout_create(&mqttTimeoutTaskTimer, CLOUD_MQTT_TIMEOUT_COUNT);
+		cloudResetTimerFlag = false;
+		waitingForMQTT      = true;
 	}
 
 	return true;

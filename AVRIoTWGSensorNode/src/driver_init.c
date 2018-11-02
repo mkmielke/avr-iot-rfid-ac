@@ -242,6 +242,18 @@ void system_init()
 	    // <true"> High
 	    true);
 
+	/* PORT setting on PC1 */
+
+	// Set pin direction to output
+	ACCESS_CONTROL_PIN_set_dir(PORT_DIR_OUT);
+
+	ACCESS_CONTROL_PIN_set_level(
+	    // <y> Initial level
+	    // <id> pad_initial_level
+	    // <false"> Low
+	    // <true"> High
+	    false);
+
 	/* PORT setting on PC3 */
 
 	// Set pin direction to output

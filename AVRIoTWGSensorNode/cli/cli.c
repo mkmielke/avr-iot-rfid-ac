@@ -37,41 +37,25 @@
 #include "../mqtt/mqtt_core/mqtt_core.h"
 #include "debug_print.h"
 
-#define NUM_COMMANDS 8
 #define WIFI_PARAMS_OPEN_CNT 1
 #define WIFI_PARAMS_PSK_CNT 2
 #define MAX_COMMAND_SIZE 100
 #define MAX_PUB_KEY_LEN 200
+#define NEWLINE "\r\n"
+
 #define UNKNOWN_CMD_MSG                                                                                                \
-	"\
---------------------------------------------\r\n\
-Unknown command. List of available commands:\r\n\
-reset\r\n\
-device\r\n\
-key\r\n\
-reconnect\r\n\
-version\r\n\
-cli_version\r\n\
-wifi <ssid>[,<pass>, [authType]]\r\n\
-debug\r\n\
---------------------------------------------\r\n\4"
+	"--------------------------------------------" NEWLINE "Unknown command. List of available commands:" NEWLINE      \
+	"reset" NEWLINE "device" NEWLINE "key" NEWLINE "reconnect" NEWLINE "version" NEWLINE "cli_version" NEWLINE         \
+	"wifi <ssid>[,<pass>,[authType]]" NEWLINE "debug" NEWLINE "--------------------------------------------" NEWLINE   \
+	"\4"
 
-static volatile char    command[MAX_COMMAND_SIZE];
-static volatile bool    isCommandReceived  = false;
-static volatile uint8_t index              = 0;
-static volatile bool    commandTooLongFlag = false;
+static char    command[MAX_COMMAND_SIZE];
+static bool    isCommandReceived  = false;
+static uint8_t index              = 0;
+static bool    commandTooLongFlag = false;
 
-const char command_reset[]            = "reset";
-const char command_reconnect[]        = "reconnect";
-const char command_wifi_auth[]        = "wifi";
-const char command_key[]              = "key";
-const char command_device[]           = "device";
-const char command_cli_version[]      = "cli_version";
-const char command_firmware_version[] = "version";
-const char command_debug[]            = "debug";
-
-const char cli_version_number[]      = "1.0";
-const char firmware_version_number[] = "1.0";
+const char *const cli_version_number      = "2.0";
+const char *const firmware_version_number = "1.0";
 
 static void command_received(char *command_text);
 static void reset_cmd(char *pArg);
@@ -83,26 +67,27 @@ static void get_cli_version(char *pArg);
 static void get_firmware_version(char *pArg);
 static void set_debug_level(char *pArg);
 
+static bool endOfLineTest(char c);
 static void enableUsartRxInterrupts(void);
-static void receiveCommandCharacter(void);
 
 #define CLI_TASK_INTERVAL 50
+
 absolutetime_t CLI_task(void *);
 timer_struct_t CLI_task_timer = {CLI_task};
 
 struct cmd {
-	const char *command;
-	void (*handler)(char *argument);
+	const char *const command;
+	void (*const handler)(char *argument);
 };
 
-const struct cmd commands[NUM_COMMANDS] = {{command_reset, reset_cmd},
-                                           {command_reconnect, reconnect_cmd},
-                                           {command_wifi_auth, set_wifi_auth},
-                                           {command_key, get_public_key},
-                                           {command_device, get_device_id},
-                                           {command_cli_version, get_cli_version},
-                                           {command_firmware_version, get_firmware_version},
-                                           {command_debug, set_debug_level}};
+const struct cmd commands[] = {{"reset", reset_cmd},
+                               {"reconnect", reconnect_cmd},
+                               {"wifi", set_wifi_auth},
+                               {"key", get_public_key},
+                               {"device", get_device_id},
+                               {"cli_version", get_cli_version},
+                               {"version", get_firmware_version},
+                               {"debug", set_debug_level}};
 
 void CLI_init(void)
 {
@@ -110,44 +95,50 @@ void CLI_init(void)
 	scheduler_timeout_create(&CLI_task_timer, CLI_TASK_INTERVAL);
 }
 
+static bool endOfLineTest(char c)
+{
+	static char test     = 0;
+	bool        retvalue = true;
+
+	if (c == '\n') {
+		if (test == '\r') {
+			retvalue = false;
+		}
+	}
+	test = c;
+	return retvalue;
+}
+
 absolutetime_t CLI_task(void *param)
 {
 	// read all the EUSART bytes in the queue
 	while (USART_0_is_rx_ready() && !isCommandReceived) {
-		receiveCommandCharacter();
-	}
+		char c = USART_0_read();
+		// read until we get a newline
+		if (c == '\r' || c == '\n') {
+			command[index] = 0;
 
-	if (isCommandReceived) {
-		char command_copy[MAX_COMMAND_SIZE];
-		strncpy(command_copy, (char *)command, strlen((char *)command) + 1); // copying the null terminator as well
-		isCommandReceived = false;
-		index             = 0;
-		command_received((char *)command_copy);
-	}
-
-	if (commandTooLongFlag) {
-		printf("\n\rCommand too long!\r\n");
-		commandTooLongFlag = false;
+			if (!commandTooLongFlag) {
+				if (endOfLineTest(c)) {
+					command_received((char *)command);
+				}
+			}
+			if (commandTooLongFlag) {
+				printf(NEWLINE "Command too long" NEWLINE);
+			}
+			index              = 0;
+			commandTooLongFlag = false;
+		} else // otherwise store the character
+		{
+			if (index < MAX_COMMAND_SIZE) {
+				command[index++] = c;
+			} else {
+				commandTooLongFlag = true;
+			}
+		}
 	}
 
 	return CLI_TASK_INTERVAL;
-}
-
-void receiveCommandCharacter(void)
-{
-	char c = USART_0_read();
-	if (c != '\n' && c != 0 && c != '\r') {
-		command[index++] = c;
-		if (index >= MAX_COMMAND_SIZE) {
-			index              = 0;
-			commandTooLongFlag = true;
-		}
-	} else {
-		if (index > 0) {
-			command[index]    = '\0';
-			isCommandReceived = true;
-		}
-	}
 }
 
 static void set_wifi_auth(char *ssid_pwd_auth)
@@ -270,7 +261,7 @@ static void command_received(char *command_text)
 		argument++;
 	}
 
-	for (uint8_t i = 0; i < NUM_COMMANDS; i++) {
+	for (uint8_t i = 0; i < sizeof(commands) / sizeof(*commands); i++) {
 		cmp    = strcmp(command_text, commands[i].command);
 		ct_len = strlen(command_text);
 		cc_len = strlen(commands[i].command);

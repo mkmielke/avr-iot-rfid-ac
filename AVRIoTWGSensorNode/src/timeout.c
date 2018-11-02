@@ -88,8 +88,6 @@ void scheduler_timeout_init(void)
 	// RTC.PITINTCTRL = 0 << RTC_PI_bp; /* Periodic Interrupt: disabled */
 }
 
-// Disable all the timers without deleting them from any list. Timers can be
-//    restarted by calling startTimerAtHead
 void scheduler_stop_timeouts(void)
 {
 	RTC.INTCTRL &= ~RTC_OVF_bm;
@@ -100,24 +98,21 @@ void scheduler_stop_timeouts(void)
 inline void scheduler_set_timer_duration(absolutetime_t duration)
 {
 	scheduler_last_timer_load = 65535 - duration;
-	RTC.CNT                   = scheduler_last_timer_load;
+
 	// Wait for clock domain synchronization
 	while (RTC.STATUS & RTC_CNTBUSY_bm)
 		;
+	RTC.CNT = scheduler_last_timer_load;
 }
 
-// Convert the time provided from a "relative to now" time to a absolute time which
-//    means ticks since the last timeout occurred or the timer module was started
 inline absolutetime_t scheduler_make_absolute(absolutetime_t timeout)
 {
 	timeout += scheduler_absolute_time_of_last_timeout;
-	if (scheduler_is_running) {
-		timeout += RTC.CNT - scheduler_last_timer_load;
-	}
+	timeout += scheduler_is_running ? RTC.CNT - scheduler_last_timer_load : 0;
+
 	return timeout;
 }
 
-// Adjust the time base so that we can never wrap, saving us a lot of complications
 inline absolutetime_t scheduler_rebase_list(void)
 {
 	timer_struct_t *base_point = scheduler_list_head;
@@ -208,33 +203,32 @@ void scheduler_start_timer_at_head(void)
 	scheduler_is_running = 1;
 }
 
-// Cancel and remove all active timers
 void scheduler_timeout_flush_all(void)
 {
 	scheduler_stop_timeouts();
 
-	while (scheduler_list_head != NULL)
+	while (scheduler_list_head != NULL) {
 		scheduler_timeout_delete(scheduler_list_head);
+	}
 
-	while (scheduler_execute_queue_head != NULL)
+	while (scheduler_execute_queue_head != NULL) {
 		scheduler_timeout_delete(scheduler_execute_queue_head);
+	}
 }
 
-// Deletes a timer from a list and returns true if the timer was found and
-//     removed from the list specified
-bool scheduler_timeout_delete_helper(timer_struct_t *volatile *list, timer_struct_t *timer)
+bool scheduler_timeout_delete_helper(timer_struct_t **list, timer_struct_t *timer)
 {
-	bool ret_val = false;
+	bool retVal = false;
 	if (*list == NULL)
-		return ret_val;
+		return retVal;
 
 	// Guard in case we get interrupted, we cannot safely compare/search and get interrupted
 	RTC.INTCTRL &= ~RTC_OVF_bm;
 
 	// Special case, the head is the one we are deleting
 	if (timer == *list) {
-		*list   = (*list)->next; // Delete the head
-		ret_val = true;
+		*list  = (*list)->next; // Delete the head
+		retVal = true;
 		scheduler_start_timer_at_head(); // Start the new timer at the head
 	} else {                             // More than one timer in the list, search the list.
 		timer_struct_t *find_timer = *list;
@@ -242,7 +236,7 @@ bool scheduler_timeout_delete_helper(timer_struct_t *volatile *list, timer_struc
 		while (find_timer != NULL) {
 			if (find_timer == timer) {
 				prev_timer->next = find_timer->next;
-				ret_val          = true;
+				retVal           = true;
 				break;
 			}
 			prev_timer = find_timer;
@@ -251,11 +245,9 @@ bool scheduler_timeout_delete_helper(timer_struct_t *volatile *list, timer_struc
 		RTC.INTCTRL |= RTC_OVF_bm;
 	}
 
-	return ret_val;
+	return retVal;
 }
 
-// This will cancel/remove a running timer. If the timer is already expired it will
-//     also remove it from the callback queue
 void scheduler_timeout_delete(timer_struct_t *timer)
 {
 	if (!scheduler_timeout_delete_helper(&scheduler_list_head, timer)) {
@@ -265,8 +257,6 @@ void scheduler_timeout_delete(timer_struct_t *timer)
 	timer->next = NULL;
 }
 
-// Moves the timer from the active list to the list of timers which are expired and
-//    needs their callbacks called in call_next_callback
 inline void scheduler_enqueue_callback(timer_struct_t *timer)
 {
 	timer_struct_t *tmp;
@@ -286,13 +276,6 @@ inline void scheduler_enqueue_callback(timer_struct_t *timer)
 	tmp->next = timer;
 }
 
-// This function checks the list of expired timers and calls the first one in the
-//    list if the list is not empty. It also reschedules the timer if the callback
-//    returned a value greater than 0
-// It is recommended this is called from the main superloop (while(1)) in your code
-//    but by design this can also be called from the timer ISR. If you wish callbacks
-//    to happen from the ISR context you can call this as the last action in timeout_isr
-//    instead.
 void scheduler_timeout_call_next_callback(void)
 {
 
@@ -306,8 +289,10 @@ void scheduler_timeout_call_next_callback(void)
 
 	// Done, remove from list
 	scheduler_execute_queue_head = scheduler_execute_queue_head->next;
+
 	// Mark the timer as not in use
 	callback_timer->next = NULL;
+
 	EXIT_CRITICAL(T); // End critical section
 
 	absolutetime_t reschedule = callback_timer->callback_ptr(callback_timer->payload);
@@ -318,9 +303,6 @@ void scheduler_timeout_call_next_callback(void)
 	}
 }
 
-// This function starts the timer provided with an expiry equal to "timeout".
-// If the timer was already active/running it will be replaced by this and the
-//    old (active) timer will be removed/cancelled first
 void scheduler_timeout_create(timer_struct_t *timer, absolutetime_t timeout)
 {
 	RTC.INTCTRL &= ~RTC_OVF_bm;

@@ -755,6 +755,99 @@ static inline bool CONF_WIFI_M2M_SPI_CS_PIN_get_level()
 }
 
 /**
+ * \brief Set ACCESS_CONTROL_PIN pull mode
+ *
+ * Configure pin to pull up, down or disable pull mode, supported pull
+ * modes are defined by device used
+ *
+ * \param[in] pull_mode Pin pull mode
+ */
+static inline void ACCESS_CONTROL_PIN_set_pull_mode(const enum port_pull_mode pull_mode)
+{
+	PORTC_set_pin_pull_mode(1, pull_mode);
+}
+
+/**
+ * \brief Set ACCESS_CONTROL_PIN data direction
+ *
+ * Select if the pin data direction is input, output or disabled.
+ * If disabled state is not possible, this function throws an assert.
+ *
+ * \param[in] direction PORT_DIR_IN  = Data direction in
+ *                      PORT_DIR_OUT = Data direction out
+ *                      PORT_DIR_OFF = Disables the pin
+ *                      (low power state)
+ */
+static inline void ACCESS_CONTROL_PIN_set_dir(const enum port_dir dir)
+{
+	PORTC_set_pin_dir(1, dir);
+}
+
+/**
+ * \brief Set ACCESS_CONTROL_PIN input/sense configuration
+ *
+ * Enable/disable ACCESS_CONTROL_PIN digital input buffer and pin change interrupt,
+ * select pin interrupt edge/level sensing mode
+ *
+ * \param[in] isc PORT_ISC_INTDISABLE_gc    = Iterrupt disabled but input buffer enabled
+ *                PORT_ISC_BOTHEDGES_gc     = Sense Both Edges
+ *                PORT_ISC_RISING_gc        = Sense Rising Edge
+ *                PORT_ISC_FALLING_gc       = Sense Falling Edge
+ *                PORT_ISC_INPUT_DISABLE_gc = Digital Input Buffer disabled
+ *                PORT_ISC_LEVEL_gc         = Sense low Level
+ */
+static inline void ACCESS_CONTROL_PIN_set_isc(const PORT_ISC_t isc)
+{
+	PORTC_pin_set_isc(1, isc);
+}
+
+/**
+ * \brief Set ACCESS_CONTROL_PIN inverted mode
+ *
+ * Enable or disable inverted I/O on a pin
+ *
+ * \param[in] inverted true  = I/O on ACCESS_CONTROL_PIN is inverted
+ *                     false = I/O on ACCESS_CONTROL_PIN is not inverted
+ */
+static inline void ACCESS_CONTROL_PIN_set_inverted(const bool inverted)
+{
+	PORTC_pin_set_inverted(1, inverted);
+}
+
+/**
+ * \brief Set ACCESS_CONTROL_PIN level
+ *
+ * Sets output level on a pin
+ *
+ * \param[in] level true  = Pin level set to "high" state
+ *                  false = Pin level set to "low" state
+ */
+static inline void ACCESS_CONTROL_PIN_set_level(const bool level)
+{
+	PORTC_set_pin_level(1, level);
+}
+
+/**
+ * \brief Toggle output level on ACCESS_CONTROL_PIN
+ *
+ * Toggle the pin level
+ */
+static inline void ACCESS_CONTROL_PIN_toggle_level()
+{
+	PORTC_toggle_pin_level(1);
+}
+
+/**
+ * \brief Get level on ACCESS_CONTROL_PIN
+ *
+ * Reads the level on a pin
+ */
+static inline bool ACCESS_CONTROL_PIN_get_level()
+{
+	return PORTC_get_pin_level(1);
+}
+
+/**
  * \brief Set RFID_CLICK_SPI_CS pull mode
  *
  * Configure pin to pull up, down or disable pull mode, supported pull

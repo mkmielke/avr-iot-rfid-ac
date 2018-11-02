@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief I2C master driver.
+ * \brief I2C Simple master driver.
  *
  (c) 2018 Microchip Technology Inc. and its subsidiaries.
 

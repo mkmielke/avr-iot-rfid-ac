@@ -4,7 +4,7 @@ versions:
   api: '1.0'
   backend: 1.4.93
   commit: 9c29f8365cf76e9937d19b1e765a83bc7a80e4e9
-  content: 1.0.1193
+  content: 1.0.1231
   content_pack_name: acme-packs-all
   format: '2'
   frontend: 1.4.1787
@@ -388,6 +388,12 @@ pads:
     user_label: CONF_WIFI_M2M_SPI_CS_PIN
     configuration:
       pad_initial_level: High
+  ACCESS_CONTROL_PIN:
+    name: PC1
+    definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PC1
+    mode: Digital output
+    user_label: ACCESS_CONTROL_PIN
+    configuration: null
   RFID_CLICK_SPI_CS:
     name: PC3
     definition: Atmel:ATmega4809_drivers:1.0.0::ATmega4808-MFR::pad::PC3

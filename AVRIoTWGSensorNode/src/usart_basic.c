@@ -84,15 +84,17 @@ void USART_0_default_rx_isr_cb(void)
 	data = USART2.RXDATAL;
 	/* Calculate buffer index */
 	tmphead = (USART_0_rx_head + 1) & USART_0_RX_BUFFER_MASK;
-	/* Store new index */
-	USART_0_rx_head = tmphead;
 
 	if (tmphead == USART_0_rx_tail) {
 		/* ERROR! Receive buffer overflow */
+	} else {
+		/* Store new index */
+		USART_0_rx_head = tmphead;
+
+		/* Store received data in buffer */
+		USART_0_rxbuf[tmphead] = data;
+		USART_0_rx_elements++;
 	}
-	/* Store received data in buffer */
-	USART_0_rxbuf[tmphead] = data;
-	USART_0_rx_elements++;
 }
 
 void USART_0_default_udre_isr_cb(void)
@@ -107,7 +109,7 @@ void USART_0_default_udre_isr_cb(void)
 		USART_0_tx_tail = tmptail;
 		/* Start transmission */
 		USART2.TXDATAL = USART_0_txbuf[tmptail];
-		;
+
 		USART_0_tx_elements--;
 	}
 
@@ -259,7 +261,8 @@ int8_t USART_0_init()
 	//		 | USART_PMODE_DISABLED_gc /* No Parity */
 	//		 | USART_SBMODE_1BIT_gc; /* 1 stop bit */
 
-	USART2.DBGCTRL = 1 << USART_DBGRUN_bp; /* Debug Run: enabled */
+	// USART2.DBGCTRL = 0 << USART_ABMBP_bp /* Autobaud majority voter bypass: disabled */
+	//		 | 0 << USART_DBGRUN_bp; /* Debug Run: disabled */
 
 	// USART2.EVCTRL = 0 << USART_IREI_bp; /* IrDA Event Input Enable: disabled */
 

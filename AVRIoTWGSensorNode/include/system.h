@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief System Related Support
+ * \brief Tiny System Related Support
  *
  (c) 2018 Microchip Technology Inc. and its subsidiaries.
 

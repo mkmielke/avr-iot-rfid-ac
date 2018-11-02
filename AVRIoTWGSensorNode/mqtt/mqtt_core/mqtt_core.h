@@ -314,6 +314,7 @@ int32_t MQTT_getConnectionAge(void);
 bool    MQTT_CreateConnectPacket(mqttConnectPacket *newConnectPacket);
 bool    MQTT_CreatePublishPacket(mqttPublishPacket *newPublishPacket);
 bool    MQTT_CreateSubscribePacket(mqttSubscribePacket *newSubscribePacket);
+void    MQTT_initialiseState(void);
 
 mqttCurrentState MQTT_Disconnect(mqttContext *mqttContextPtr);
 mqttCurrentState MQTT_TransmissionHandler(mqttContext *mqttContextPtr);

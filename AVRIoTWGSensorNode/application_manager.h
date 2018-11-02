@@ -9,6 +9,7 @@
 #define APPLICATION_MANAGER_H_
 
 struct shared_networking_params {
+	int amDisconnecting : 1;
 	int haveAPConnection : 1;
 	int haveERROR : 1;
 };

@@ -375,6 +375,11 @@ static absolutetime_t checkPingrespTimeoutState()
 	return (WAITFORPINGRESP_TIMEOUT);
 }
 
+void MQTT_initialiseState(void)
+{
+	mqttState = DISCONNECTED;
+}
+
 mqttCurrentState MQTT_GetConnectionState(void)
 {
 	return mqttState;
@@ -855,7 +860,8 @@ mqttCurrentState MQTT_TransmissionHandler(mqttContext *mqttConnectionPtr)
 			// The timeout API names are different in MCC foundation
 			// services timeout driver and START timeout driver
 			timeout_create(&connackTimer, WAITFORCONNACK_TIMEOUT);
-			mqttState = WAITFORCONNACK;
+			mqttState             = WAITFORCONNACK;
+			connackTimeoutOccured = false;
 		}
 		break;
 

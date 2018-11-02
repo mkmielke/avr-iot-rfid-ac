@@ -44,6 +44,9 @@ static int8_t      mqqtSocket = -1;
 
 void MQTT_ClientInitialise(void)
 {
+	MQTT_initialiseState();
+	memset(mqttTxBuff, 0, sizeof(TX_BUFF_SIZE));
+	memset(mqttRxBuff, 0, sizeof(RX_BUFF_SIZE));
 	mqttConn.mqttDataExchangeBuffers.txbuff.start           = mqttTxBuff;
 	mqttConn.mqttDataExchangeBuffers.txbuff.bufferLength    = TX_BUFF_SIZE;
 	mqttConn.mqttDataExchangeBuffers.txbuff.currentLocation = mqttConn.mqttDataExchangeBuffers.txbuff.start;

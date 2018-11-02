@@ -151,7 +151,6 @@
         <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_config.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_core/mqtt_core.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_core/mqtt_core.h"/>
-        <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_debug.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_exchange_buffer/mqtt_exchange_buffer.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_exchange_buffer/mqtt_exchange_buffer.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="mqtt/mqtt_packetTransfer_interface.c"/>
@@ -229,6 +228,8 @@
         <file category="header" condition="ARMCC, GCC, IAR" name="cloud/mqtt_packetPopulation/mqtt_packetPopulate.h"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="credentials_storage/credentials_storage.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="credentials_storage/credentials_storage.h"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="src/timeout.c"/>
+        <file category="source" condition="ARMCC, GCC, IAR" name="src/usart_basic.c"/>
         <file category="source" condition="ARMCC, GCC, IAR" name="src/driver_init.c"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/driver_init.h"/>
         <file category="header" condition="ARMCC, GCC, IAR" name="include/atmel_start_pins.h"/>
@@ -302,7 +303,6 @@
         <file category="include" condition="ARMCC, GCC, IAR" name="include"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="utils"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="utils/assembler"/>
-        <file category="include" condition="ARMCC, GCC, IAR" name="cli"/>
         <file category="include" condition="ARMCC, GCC, IAR" name="cryptoauthlib/lib"/>
         <file category="include" condition="ARMCC, GCC, IAR" name=""/>
       </files>

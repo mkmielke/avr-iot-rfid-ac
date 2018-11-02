@@ -1,7 +1,7 @@
 /**
  * \file
  *
- * \brief Port
+ * \brief Port related support
  *
  (c) 2018 Microchip Technology Inc. and its subsidiaries.
 

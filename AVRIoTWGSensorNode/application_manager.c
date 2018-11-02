@@ -62,13 +62,20 @@ void application_init()
 	// Get serial number from the ECC608 chip
 	CRYPTO_CLIENT_printSerialNumber(attDeviceID);
 
-	wifi_init(wifiConnectionStateChanged);
-	CLOUD_init(attDeviceID);
-
 	debug_init(attDeviceID);
-	debug_setSeverity(CREDENTIALS_STORAGE_getDebugSeverity());
+	// Default not to EEPROM value but to NONE
+	// debug_setSeverity(CREDENTIALS_STORAGE_getDebugSeverity());
+	// debug_setSeverity(SEVERITY_DEBUG); // Use this to start up in debug mode always, TODO: Do this via define we can
+	// pass in without modifying the code!
 
-	scheduler_timeout_create(&MAIN_dataTasksTimer, MAIN_DATATASK_INTERVAL);
+	uint8_t mode = SW0_get_level();
+
+	wifi_init(wifiConnectionStateChanged, mode);
+
+	if (mode > 0) {
+		CLOUD_init(attDeviceID);
+		scheduler_timeout_create(&MAIN_dataTasksTimer, MAIN_DATATASK_INTERVAL);
+	}
 }
 
 // React to the WIFI state change here. Status of 1 means connected, Status of 0 means disconnected
@@ -116,6 +123,10 @@ absolutetime_t MAIN_dataTask(void *payload)
 	// Check if the disconnect button was pressed
 	if (SW0_get_level() == 0) {
 		CLOUD_disconnect();
+	}
+
+	if (SW1_get_level() == 0) {
+		shared_networking_params.haveAPConnection = 1;
 	}
 
 	LED_BLUE_set_level(!shared_networking_params.haveAPConnection);
