@@ -89,7 +89,7 @@ void runScheduler(void)
 
 // This could be better done with a function pointer (DI) but in the interest of simplicity
 //     we avoided that. This is being called from MAIN_dataTask below
-void sendToCloud(void);
+void RFID_Scan(void);
 
 // This gets called by the scheduler approximately every 100ms
 absolutetime_t MAIN_dataTask(void *payload)
@@ -104,11 +104,11 @@ absolutetime_t MAIN_dataTask(void *payload)
 		// How many seconds since the last time this loop ran?
 		int32_t delta = difftime(timeNow, previousTransmissionTime);
 
-		if (delta >= CFG_SEND_INTERVAL) {
+		if (delta >= CFG_SCAN_INTERVAL) {
 			previousTransmissionTime = timeNow;
 
 			// Call the data task in main.c
-			sendToCloud();
+			RFID_Scan();
 		}
 	}
 

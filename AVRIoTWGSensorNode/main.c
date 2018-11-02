@@ -32,27 +32,59 @@ SOFTWARE.
 #include "led.h"
 #include "sensors_handling.h"
 #include "cloud/cloud_service.h"
+#include "cr95hf/lib_iso15693.h"
+
+ReaderConfigStruct ReaderConfig; 
+uint8_t GloParameterSelected;	   	// select parameter
+
+int8_t rfid_click_init( ReaderConfigStruct* ReaderConfig, CR95HF_INTERFACE bus )
+{
+	// initialize pins
+	RFID_CLICK_SPI_CS_set_level( 1 );
+	RFID_CLICK_INT_I_set_level( 1 );
+	
+	// select serial communication interface (SPI)
+	RFID_CLICK_SSI0_set_level( 1 );
+	RFID_CLICK_SSI1_set_level( 0 );
+	
+	ReaderConfig->Interface = bus;
+	
+	// TODO: is SPI bus initialized?
+	
+	return CR95HF_PORsequence();
+}
 
 // This will get called every 1 second only while we have a valid Cloud connection
-void sendToCloud(void)
+void RFID_Scan(void)
 {
-	static char json[70];
+	static char json[30];
+	static uint8_t TagUID[ISO15693_NBBYTE_UID]; // this MUST be static
+	
+	// This part runs every CFG_SCAN_INTERVAL seconds
+	if ( ISO15693_GetUID( TagUID ) == RESULTOK )
+	{
+		// UID is stored in reverse byte order
+		sprintf( json, "{\"UID\":\"%02X%02X%02X%02X%02X%02X%02X%02X\"}", 
+			TagUID[7], TagUID[6], TagUID[5], TagUID[4], TagUID[3], TagUID[2], TagUID[1], TagUID[0] );
 
-	// This part runs every CFG_SEND_INTERVAL seconds
-	int rawTemperature = SENSORS_getTempValue();
-	int light          = SENSORS_getLightValue();
-	sprintf(json, "{\"Light\":%d,\"Temp\":\"%d.%02d\"}", light, rawTemperature / 100, abs(rawTemperature) % 100);
-
-	CLOUD_publishData((uint8_t *)json, strlen(json));
+		CLOUD_publishData((uint8_t *)json, strlen(json));
+	}
 
 	LED_flashYellow();
 }
 
 int main(void)
-{
+{		
 	application_init();
+	
+	if ( rfid_click_init( &ReaderConfig, CR95HF_INTERFACE_SPI ) != CR95HF_SUCCESS_CODE )
+	{
+		LED_RED_set_level( LED_ON );
+		while ( 1 );
+	}
 
-	while (1) {
+	while (1) 
+	{
 		runScheduler();
 	}
 

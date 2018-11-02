@@ -405,8 +405,8 @@
     <Folder Include="mqtt\" />
     <Folder Include="mqtt\mqtt_comm_bsd\" />
     <Folder Include="mqtt\mqtt_core\" />
+    <Folder Include="cr95hf" />
     <Folder Include="mqtt\mqtt_exchange_buffer\" />
-    <Folder Include="rfid" />
     <Folder Include="src\" />
     <Folder Include="utils\" />
     <Folder Include="utils\assembler\" />
@@ -502,6 +502,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Config\RTE_Components.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cr95hf\drv_CR95HF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cr95hf\drv_CR95HF.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="credentials_storage\credentials_storage.c">
@@ -876,6 +882,18 @@
     <Compile Include="mqtt\mqtt_core\mqtt_core.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="cr95hf\lib_CR95HF.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cr95hf\lib_CR95HF.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cr95hf\lib_iso15693.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="cr95hf\lib_iso15693.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mqtt\mqtt_core\mqtt_core.h">
       <SubType>compile</SubType>
     </Compile>
@@ -892,18 +910,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mqtt\mqtt_packetTransfer_interface.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rfid\lib_CR95HF.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rfid\lib_CR95HF.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rfid\lib_iso15693.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="rfid\lib_iso15693.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sensors_handling.c">
