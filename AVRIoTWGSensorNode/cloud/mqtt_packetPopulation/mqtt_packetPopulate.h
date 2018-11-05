@@ -41,6 +41,5 @@ void MQTT_CLIENT_publish(uint8_t *data, uint16_t len);
 void MQTT_CLIENT_subscribe( void );
 void MQTT_CLIENT_receive(uint8_t *data, uint8_t len);
 void MQTT_CLIENT_connect(void);
-void MQTT_CLIENT_process_data( uint8_t* topic, uint8_t* payload );
 
 #endif /* MQTT_PACKET_POPULATE_H */

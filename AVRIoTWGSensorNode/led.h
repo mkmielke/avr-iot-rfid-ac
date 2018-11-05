@@ -34,5 +34,6 @@
 
 void LED_test(void);
 void LED_flashYellow(void);
+void LED_flashRed(void);
 
 #endif /* LED_H_ */

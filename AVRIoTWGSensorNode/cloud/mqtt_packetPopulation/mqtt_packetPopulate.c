@@ -118,9 +118,3 @@ void MQTT_CLIENT_connect(void)
 
 	MQTT_CreateConnectPacket(&cloudConnectPacket);
 }
-
-// process the incoming data from subscriptions
-void MQTT_CLIENT_process_data( uint8_t* topic, uint8_t* payload )
-{
-	debug_printInfo( "MQTT: Processing Topic: %s Payload: %s", topic, payload );
-}

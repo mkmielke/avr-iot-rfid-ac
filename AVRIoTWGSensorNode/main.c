@@ -30,8 +30,6 @@ SOFTWARE.
 #include <stdlib.h>
 #include "application_manager.h"
 #include "led.h"
-#include "sensors_handling.h"
-#include "cloud/cloud_service.h"
 #include "cr95hf/lib_iso15693.h"
 
 ReaderConfigStruct ReaderConfig; 
@@ -54,31 +52,13 @@ int8_t rfid_click_init( ReaderConfigStruct* ReaderConfig, CR95HF_INTERFACE bus )
 	return CR95HF_PORsequence();
 }
 
-// This will get called every 1 second only while we have a valid Cloud connection
-void RFID_Scan(void)
-{
-	static char json[30];
-	static uint8_t TagUID[ISO15693_NBBYTE_UID]; // this MUST be static
-	
-	// This part runs every CFG_SCAN_INTERVAL seconds
-	if ( ISO15693_GetUID( TagUID ) == RESULTOK )
-	{
-		// UID is stored in reverse byte order
-		sprintf( json, "{\"UID\":\"%02X%02X%02X%02X%02X%02X%02X%02X\"}", 
-			TagUID[7], TagUID[6], TagUID[5], TagUID[4], TagUID[3], TagUID[2], TagUID[1], TagUID[0] );
-
-		CLOUD_publishData((uint8_t *)json, strlen(json));
-	}
-
-	LED_flashYellow();
-}
-
 int main(void)
 {		
 	application_init();
 	
 	if ( rfid_click_init( &ReaderConfig, CR95HF_INTERFACE_SPI ) != CR95HF_SUCCESS_CODE )
 	{
+		// If init fails, turn on red LED and stall
 		LED_RED_set_level( LED_ON );
 		while ( 1 );
 	}

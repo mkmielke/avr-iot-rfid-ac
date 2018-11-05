@@ -22,6 +22,9 @@
 #include "credentials_storage/credentials_storage.h"
 #include "led.h"
 #include "debug_print.h"
+#include "cr95hf/lib_iso15693.h"
+#include "access_control.h"
+#include "cloud/mqtt_packetPopulation/mqtt_packetPopulate.h"
 
 #define MAIN_DATATASK_INTERVAL 100
 
@@ -33,6 +36,7 @@ absolutetime_t MAIN_dataTask(void *payload);
 timer_struct_t MAIN_dataTasksTimer = {MAIN_dataTask};
 
 void wifiConnectionStateChanged(uint8_t status);
+void RFID_Scan(void);
 
 void application_init()
 {
@@ -94,10 +98,6 @@ void runScheduler(void)
 	scheduler_timeout_call_next_callback();
 }
 
-// This could be better done with a function pointer (DI) but in the interest of simplicity
-//     we avoided that. This is being called from MAIN_dataTask below
-void RFID_Scan(void);
-
 // This gets called by the scheduler approximately every 100ms
 absolutetime_t MAIN_dataTask(void *payload)
 {
@@ -130,10 +130,44 @@ absolutetime_t MAIN_dataTask(void *payload)
 	}
 
 	LED_BLUE_set_level(!shared_networking_params.haveAPConnection);
-	LED_RED_set_level(!shared_networking_params.haveERROR);
-	LED_GREEN_set_level(!CLOUD_isConnected());
 
 	// This is milliseconds managed by the RTC and the scheduler, this return makes the
 	//      timer run another time, returning 0 will make it stop
 	return MAIN_DATATASK_INTERVAL;
+}
+
+// This will get called every 1 second only while we have a valid Cloud connection
+void RFID_Scan(void)
+{
+	static char json[30];
+	static uint8_t TagUID[ISO15693_NBBYTE_UID]; // this MUST be static
+	
+	// This part runs every CFG_SCAN_INTERVAL seconds
+	if ( ISO15693_GetUID( TagUID ) == RESULTOK )
+	{
+		// UID is stored in reverse byte order
+		sprintf( json, "{\"UID\":\"%02X%02X%02X%02X%02X%02X%02X%02X\"}",
+		TagUID[7], TagUID[6], TagUID[5], TagUID[4], TagUID[3], TagUID[2], TagUID[1], TagUID[0] );
+
+		CLOUD_publishData((uint8_t *)json, strlen(json));
+	}
+
+	LED_flashYellow();
+}
+
+void process_cloud_command( uint8_t* topic, uint8_t* payload )
+{
+	// mqttSubscribe = "/devices/d012313D1E521D10BFE/commands/#"
+	// need to ignore the "/#" -> 37 bytes
+	if ( memcmp( topic, mqttSubscribe, 37 ) == 0 )
+	{
+		if ( strcmp( (char*)payload, "YES" ) == 0 )
+		{
+			Access_Granted();
+		}
+		else
+		{
+			LED_flashRed();
+		}
+	}
 }

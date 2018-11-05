@@ -67,3 +67,18 @@ void LED_flashYellow(void)
 	LED_YELLOW_set_level(LED_ON);
 	scheduler_timeout_create(&yellow_timer, 200);
 }
+
+static absolutetime_t red_task(void *payload);
+static timer_struct_t red_timer = {red_task};
+
+static absolutetime_t red_task(void *payload)
+{
+	LED_RED_set_level(LED_OFF);
+	return 0;
+}
+
+void LED_flashRed(void)
+{
+	LED_RED_set_level(LED_ON);
+	scheduler_timeout_create(&red_timer, 1000);
+}

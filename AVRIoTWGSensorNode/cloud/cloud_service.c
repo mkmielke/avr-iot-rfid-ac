@@ -373,7 +373,7 @@ static uint8_t reInit(void)
 	// set callback function to handle a received PUBLISH packet (only one subscription)
 	memset( &cloud_publishReceiveCallBackTable, 0, sizeof( cloud_publishReceiveCallBackTable ) );
 	MQTT_SetPublishReceptionHandlerTable( cloud_publishReceiveCallBackTable );
-	cloud_publishReceiveCallBackTable[0].mqttHandlePublishDataCallBack = MQTT_CLIENT_process_data;
+	cloud_publishReceiveCallBackTable[0].mqttHandlePublishDataCallBack = process_cloud_command;
 	cloud_publishReceiveCallBackTable[0].topic = (uint8_t*)mqttSubscribe;
 
 	int8_t e;

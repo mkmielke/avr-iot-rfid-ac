@@ -17,5 +17,6 @@ extern struct shared_networking_params shared_networking_params;
 
 void application_init(void);
 void runScheduler(void);
+void process_cloud_command( uint8_t* topic, uint8_t* payload );
 
 #endif /* APPLICATION_MANAGER_H_ */
