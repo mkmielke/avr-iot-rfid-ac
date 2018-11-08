@@ -147,9 +147,11 @@ void RFID_Scan(void)
 	{
 		// UID is stored in reverse byte order
 		sprintf( json, "{\"UID\":\"%02X%02X%02X%02X%02X%02X%02X%02X\"}",
-		TagUID[7], TagUID[6], TagUID[5], TagUID[4], TagUID[3], TagUID[2], TagUID[1], TagUID[0] );
+			TagUID[7], TagUID[6], TagUID[5], TagUID[4], TagUID[3], TagUID[2], TagUID[1], TagUID[0] );
 
 		CLOUD_publishData((uint8_t *)json, strlen(json));
+		
+		debug_printInfo( "RFID: %s", json );
 	}
 
 	LED_flashYellow();
