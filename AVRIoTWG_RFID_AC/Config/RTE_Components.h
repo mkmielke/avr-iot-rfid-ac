@@ -39,7 +39,7 @@
  *
  * \acme_license_stop
  *
- * Project: AVRIoTWGSensorNode
+ * Project: AVRIoTWG_RFID_AC
  * Target:  ATmega4808 
  *
  **/
